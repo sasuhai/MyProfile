@@ -43,14 +43,20 @@ const ProjectsEditor = ({ onUpdate }) => {
         setUploading(true)
         try {
             const fileName = `project-${Date.now()}.${file.name.split('.').pop()}`
+            console.log('Uploading file:', fileName, 'to bucket: project-images')
             const { data, error } = await uploadFile('project-images', fileName, file)
 
-            if (error) throw error
+            if (error) {
+                console.error('Upload error:', error)
+                throw error
+            }
 
+            console.log('Upload successful:', data)
             setFormData({ ...formData, image_url: data })
             toast.success('Image uploaded!')
         } catch (error) {
-            toast.error('Failed to upload image')
+            console.error('Image upload failed:', error)
+            toast.error(error.message || 'Failed to upload image')
         } finally {
             setUploading(false)
         }

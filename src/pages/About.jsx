@@ -1,14 +1,15 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProfileByUsername, getSkills } from '../lib/supabase'
-import { Code2, Palette, Database, Globe, Zap, Heart } from 'lucide-react'
+import { getProfileByUsername, getSkills, getAboutFeatures } from '../lib/supabase'
+import { Code2, Palette, Database, Globe, Zap, Heart, Star, Award, Target, Lightbulb } from 'lucide-react'
 
 const About = ({ username: usernameProp, profile: profileProp }) => {
     const { username: usernameParam } = useParams()
     const username = usernameProp || usernameParam
     const [profile, setProfile] = useState(profileProp || null)
     const [skills, setSkills] = useState([])
+    const [features, setFeatures] = useState([])
 
     useEffect(() => {
         loadData()
@@ -22,6 +23,19 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
 
         const { data: skillsData } = await getSkills(username)
         if (skillsData) setSkills(skillsData)
+
+        const { data: featuresData } = await getAboutFeatures(username)
+        if (featuresData && featuresData.length > 0) {
+            setFeatures(featuresData)
+        } else {
+            // Default features if none in database
+            setFeatures([
+                { icon: 'Code2', label: 'Clean Code', description: 'Writing maintainable and scalable code' },
+                { icon: 'Zap', label: 'Fast Learner', description: 'Quick to adapt to new technologies' },
+                { icon: 'Heart', label: 'Passionate', description: 'Love what I do every day' },
+                { icon: 'Globe', label: 'Team Player', description: 'Collaborative and communicative' },
+            ])
+        }
     }
 
     const groupedSkills = skills.reduce((acc, skill) => {
@@ -62,8 +76,8 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
                     <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3 }}
                             className="space-y-6"
                         >
                             <h2 className="font-display text-3xl font-bold">
@@ -81,24 +95,22 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
 
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
                             className="grid grid-cols-2 gap-4"
                         >
-                            {[
-                                { icon: Code2, label: 'Clean Code', description: 'Writing maintainable and scalable code' },
-                                { icon: Zap, label: 'Fast Learner', description: 'Quick to adapt to new technologies' },
-                                { icon: Heart, label: 'Passionate', description: 'Love what I do every day' },
-                                { icon: Globe, label: 'Team Player', description: 'Collaborative and communicative' },
-                            ].map((item, index) => {
-                                const Icon = item.icon
+                            {features.map((item, index) => {
+                                const getIcon = (iconName) => {
+                                    const icons = { Code2, Zap, Heart, Globe, Star, Award, Target, Lightbulb }
+                                    return icons[iconName] || Code2
+                                }
+                                const Icon = getIcon(item.icon)
                                 return (
                                     <motion.div
                                         key={item.label}
                                         initial={{ opacity: 0, scale: 0.9 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.3, delay: 0.2 + index * 0.05 }}
                                         className="card p-6 text-center card-hover"
                                     >
                                         <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
@@ -150,8 +162,8 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
                 <div className="container-custom">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="text-center mb-12"
                     >
                         <h2 className="font-display text-3xl sm:text-4xl font-bold mb-4">
@@ -169,9 +181,8 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
                                 <motion.div
                                     key={category}
                                     initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3, delay: index * 0.05 }}
                                     className="card p-6"
                                 >
                                     <div className="flex items-center space-x-3 mb-4">

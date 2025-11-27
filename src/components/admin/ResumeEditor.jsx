@@ -14,8 +14,9 @@ import {
     updateCertification,
     deleteCertification
 } from '../../lib/supabase'
-import { GraduationCap, Briefcase, Award, Plus, Edit, Trash2, Save, X, Calendar, MapPin } from 'lucide-react'
+import { GraduationCap, Briefcase, Award, Plus, Edit, Trash2, Save, X, Calendar, MapPin, Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
+import CustomSectionsEditor from './CustomSectionsEditor'
 
 const ResumeEditor = () => {
     const [activeSection, setActiveSection] = useState('education')
@@ -200,17 +201,19 @@ const ResumeEditor = () => {
                     <h2 className="font-display text-2xl font-bold">
                         Resume Editor
                     </h2>
-                    <button
-                        onClick={handleAdd}
-                        className="btn btn-primary"
-                    >
-                        <Plus className="w-4 h-4" />
-                        Add New
-                    </button>
+                    {activeSection !== 'custom' && (
+                        <button
+                            onClick={handleAdd}
+                            className="btn btn-primary"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Add New
+                        </button>
+                    )}
                 </div>
 
                 {/* Section Tabs */}
-                <div className="flex space-x-4 mb-6">
+                <div className="flex flex-wrap gap-2 mb-6">
                     <button
                         onClick={() => setActiveSection('education')}
                         className={`btn ${activeSection === 'education' ? 'btn-primary' : 'btn-secondary'}`}
@@ -231,6 +234,13 @@ const ResumeEditor = () => {
                     >
                         <Award className="w-4 h-4" />
                         Certifications ({certifications.length})
+                    </button>
+                    <button
+                        onClick={() => setActiveSection('custom')}
+                        className={`btn ${activeSection === 'custom' ? 'btn-primary' : 'btn-secondary'}`}
+                    >
+                        <Sparkles className="w-4 h-4" />
+                        Custom Sections
                     </button>
                 </div>
 
@@ -272,27 +282,31 @@ const ResumeEditor = () => {
                 </AnimatePresence>
 
                 {/* Items List */}
-                <div className="space-y-4">
-                    {loading ? (
-                        <div className="text-center py-12">
-                            <div className="spinner w-8 h-8 mx-auto" />
-                        </div>
-                    ) : getCurrentItems().length > 0 ? (
-                        getCurrentItems().map((item) => (
-                            <ItemCard
-                                key={item.id}
-                                item={item}
-                                type={activeSection}
-                                onEdit={() => handleEdit(item)}
-                                onDelete={() => handleDelete(item.id)}
-                            />
-                        ))
-                    ) : (
-                        <div className="text-center py-12 text-dark-500 dark:text-dark-400">
-                            <p>No items yet. Click "Add New" to get started.</p>
-                        </div>
-                    )}
-                </div>
+                {activeSection === 'custom' ? (
+                    <CustomSectionsEditor />
+                ) : (
+                    <div className="space-y-4">
+                        {loading ? (
+                            <div className="text-center py-12">
+                                <div className="spinner w-8 h-8 mx-auto" />
+                            </div>
+                        ) : getCurrentItems().length > 0 ? (
+                            getCurrentItems().map((item) => (
+                                <ItemCard
+                                    key={item.id}
+                                    item={item}
+                                    type={activeSection}
+                                    onEdit={() => handleEdit(item)}
+                                    onDelete={() => handleDelete(item.id)}
+                                />
+                            ))
+                        ) : (
+                            <div className="text-center py-12 text-dark-500 dark:text-dark-400">
+                                <p>No items yet. Click "Add New" to get started.</p>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </motion.div>
     )

@@ -5,6 +5,20 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Default theme color (blue) - will be overridden by ThemeContext */
+    --color-primary-50: 224 242 254;
+    --color-primary-100: 186 230 253;
+    --color-primary-200: 125 211 252;
+    --color-primary-300: 56 189 248;
+    --color-primary-400: 14 165 233;
+    --color-primary-500: 59 130 246;
+    --color-primary-600: 37 99 235;
+    --color-primary-700: 29 78 216;
+    --color-primary-800: 30 64 175;
+    --color-primary-900: 30 58 138;
+  }
+
   body {
     @apply bg-white dark:bg-dark-950 text-dark-900 dark:text-dark-50 font-sans antialiased;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -123,4 +137,86 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-dark-400 dark:bg-dark-600;
+}
+
+/* Print styles for PDF generation */
+@media print {
+
+  /* Hide navigation and footer */
+  nav,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Remove backgrounds and shadows for cleaner print */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .card,
+  .glass {
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+    background: white !important;
+  }
+
+  /* Allow page breaks but avoid breaking inside cards */
+  section {
+    page-break-after: auto;
+  }
+
+  .card {
+    page-break-inside: avoid;
+  }
+
+  /* Adjust spacing for print */
+  .section {
+    padding: 0.5rem 0 !important;
+  }
+
+  /* Remove animations and transitions */
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure text is readable */
+  .text-dark-600,
+  .text-dark-500,
+  .text-dark-400 {
+    color: #4b5563 !important;
+  }
+
+  /* Keep primary colors visible */
+  .text-primary-600,
+  .gradient-text {
+    color: #2563eb !important;
+  }
+
+  /* Adjust container width for print */
+  .container-custom {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Ensure all content is visible */
+  * {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  /* Fix for custom sections and all sections */
+  section,
+  div {
+    display: block !important;
+  }
+
+  /* Reduce top padding */
+  .min-h-screen {
+    min-height: auto !important;
+    padding-top: 0 !important;
+  }
 }

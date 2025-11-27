@@ -2,10 +2,12 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { getCurrentUser, updateProfile, uploadFile } from '../../lib/supabase'
 import { supabase } from '../../lib/supabase'
+import { useTheme } from '../../contexts/ThemeContext'
 import { Save, Upload, Image as ImageIcon } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const ProfileEditor = () => {
+    const { setThemeColor } = useTheme()
     const [profile, setProfile] = useState({
         full_name: '',
         tagline: '',
@@ -51,8 +53,19 @@ const ProfileEditor = () => {
 
         if (data) {
             setProfile(data)
+            // Apply initial theme color
+            if (data.theme_color) {
+                setThemeColor(data.theme_color)
+            }
         }
     }
+
+    // Apply theme color when it changes
+    useEffect(() => {
+        if (profile.theme_color) {
+            setThemeColor(profile.theme_color)
+        }
+    }, [profile.theme_color])
 
     const handleChange = (e) => {
         setProfile({
@@ -99,14 +112,23 @@ const ProfileEditor = () => {
         setLoading(true)
 
         try {
-            const { error } = await updateProfile(profile)
+            // Ensure theme_color has a value
+            const profileData = {
+                ...profile,
+                theme_color: profile.theme_color || '#3b82f6'
+            }
 
-            if (error) throw error
+            const { error } = await updateProfile(profileData)
+
+            if (error) {
+                console.error('Update error details:', error)
+                throw error
+            }
 
             toast.success('Profile updated successfully!')
         } catch (error) {
             console.error('Update error:', error)
-            toast.error('Failed to update profile')
+            toast.error(error.message || 'Failed to update profile')
         } finally {
             setLoading(false)
         }
@@ -168,7 +190,7 @@ const ProfileEditor = () => {
                                 type="text"
                                 id="full_name"
                                 name="full_name"
-                                value={profile.full_name}
+                                value={profile.full_name || ''}
                                 onChange={handleChange}
                                 required
                                 className="input"
@@ -184,7 +206,7 @@ const ProfileEditor = () => {
                                 type="text"
                                 id="tagline"
                                 name="tagline"
-                                value={profile.tagline}
+                                value={profile.tagline || ''}
                                 onChange={handleChange}
                                 required
                                 className="input"
@@ -256,8 +278,8 @@ const ProfileEditor = () => {
                                                 type="button"
                                                 onClick={() => setProfile({ ...profile, theme_color: preset.color })}
                                                 className={`w-10 h-10 rounded-lg border-2 transition-all hover:scale-110 ${profile.theme_color === preset.color
-                                                        ? 'border-dark-900 dark:border-white ring-2 ring-offset-2 ring-dark-900 dark:ring-white'
-                                                        : 'border-dark-200 dark:border-dark-700'
+                                                    ? 'border-dark-900 dark:border-white ring-2 ring-offset-2 ring-dark-900 dark:ring-white'
+                                                    : 'border-dark-200 dark:border-dark-700'
                                                     }`}
                                                 style={{ backgroundColor: preset.color }}
                                                 title={preset.name}
@@ -279,7 +301,7 @@ const ProfileEditor = () => {
                         <textarea
                             id="bio"
                             name="bio"
-                            value={profile.bio}
+                            value={profile.bio || ''}
                             onChange={handleChange}
                             required
                             rows={3}
@@ -295,7 +317,7 @@ const ProfileEditor = () => {
                         <textarea
                             id="about"
                             name="about"
-                            value={profile.about}
+                            value={profile.about || ''}
                             onChange={handleChange}
                             rows={5}
                             className="textarea"
@@ -312,7 +334,7 @@ const ProfileEditor = () => {
                                 type="email"
                                 id="email"
                                 name="email"
-                                value={profile.email}
+                                value={profile.email || ''}
                                 onChange={handleChange}
                                 required
                                 className="input"
@@ -328,7 +350,7 @@ const ProfileEditor = () => {
                                 type="text"
                                 id="location"
                                 name="location"
-                                value={profile.location}
+                                value={profile.location || ''}
                                 onChange={handleChange}
                                 className="input"
                                 placeholder="City, Country"
@@ -344,7 +366,7 @@ const ProfileEditor = () => {
                             type="text"
                             id="languages"
                             name="languages"
-                            value={profile.languages}
+                            value={profile.languages || ''}
                             onChange={handleChange}
                             className="input"
                             placeholder="English, Bahasa Malaysia, Mandarin"
@@ -362,7 +384,7 @@ const ProfileEditor = () => {
                                     type="url"
                                     id="github_url"
                                     name="github_url"
-                                    value={profile.github_url}
+                                    value={profile.github_url || ''}
                                     onChange={handleChange}
                                     className="input"
                                     placeholder="https://github.com/yourusername"
@@ -377,7 +399,7 @@ const ProfileEditor = () => {
                                     type="url"
                                     id="linkedin_url"
                                     name="linkedin_url"
-                                    value={profile.linkedin_url}
+                                    value={profile.linkedin_url || ''}
                                     onChange={handleChange}
                                     className="input"
                                     placeholder="https://linkedin.com/in/yourusername"
@@ -392,7 +414,7 @@ const ProfileEditor = () => {
                                     type="url"
                                     id="twitter_url"
                                     name="twitter_url"
-                                    value={profile.twitter_url}
+                                    value={profile.twitter_url || ''}
                                     onChange={handleChange}
                                     className="input"
                                     placeholder="https://twitter.com/yourusername"

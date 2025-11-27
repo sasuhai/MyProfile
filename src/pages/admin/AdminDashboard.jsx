@@ -13,7 +13,7 @@ import {
 import { supabase } from '../../lib/supabase'
 import {
     LogOut, User, Briefcase, FolderGit2, Award, MessageSquare,
-    Settings, BarChart3, Plus, Edit, Trash2, Eye, EyeOff, Users
+    Settings, BarChart3, Plus, Edit, Trash2, Eye, EyeOff, Users, Info
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ProfileEditor from '../../components/admin/ProfileEditor'
@@ -22,6 +22,7 @@ import ProjectsEditor from '../../components/admin/ProjectsEditor'
 import ResumeEditor from '../../components/admin/ResumeEditor'
 import MessagesViewer from '../../components/admin/MessagesViewer'
 import UserManagement from '../../components/admin/UserManagement'
+import AboutFeaturesEditor from '../../components/admin/AboutFeaturesEditor'
 
 const AdminDashboard = () => {
     const { user, loading: authLoading } = useAuth()
@@ -110,6 +111,7 @@ const AdminDashboard = () => {
     const tabs = [
         { id: 'overview', label: 'Overview', icon: BarChart3 },
         { id: 'profile', label: 'Profile', icon: User },
+        { id: 'about', label: 'About Features', icon: Info },
         { id: 'skills', label: 'Skills', icon: Settings },
         { id: 'resume', label: 'Resume', icon: Briefcase },
         { id: 'projects', label: 'Projects', icon: FolderGit2 },
@@ -123,11 +125,11 @@ const AdminDashboard = () => {
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                     <div>
-                        <h1 className="font-display text-3xl sm:text-4xl font-bold mb-2">
+                        <h1 className="font-display text-2xl sm:text-3xl font-bold mb-2">
                             Admin <span className="gradient-text">Dashboard</span>
                         </h1>
                         {userProfile && (
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-dark-600 dark:text-dark-400">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-dark-600 dark:text-dark-400">
                                 <p className="flex items-center space-x-2">
                                     <User className="w-4 h-4" />
                                     <span className="font-medium">{userProfile.full_name}</span>
@@ -139,7 +141,7 @@ const AdminDashboard = () => {
                                     </span>
                                 </p>
                                 <span className="hidden sm:inline">•</span>
-                                <p className="text-sm">{userProfile.email}</p>
+                                <p className="truncate">{userProfile.email}</p>
                             </div>
                         )}
                     </div>
@@ -161,13 +163,14 @@ const AdminDashboard = () => {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${activeTab === tab.id
+                                    className={`flex items-center space-x-2 px-4 py-3 rounded-xl font-medium transition-all duration-300 text-sm whitespace-nowrap ${activeTab === tab.id
                                         ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/30'
                                         : 'bg-white dark:bg-dark-900 hover:bg-dark-100 dark:hover:bg-dark-800'
                                         }`}
                                 >
-                                    <Icon className="w-5 h-5" />
-                                    <span>{tab.label}</span>
+                                    <Icon className="w-4 h-4 flex-shrink-0" />
+                                    <span className="hidden sm:inline">{tab.label}</span>
+                                    <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
                                 </button>
                             )
                         })}
@@ -267,6 +270,7 @@ const AdminDashboard = () => {
                     )}
 
                     {activeTab === 'profile' && <ProfileEditor />}
+                    {activeTab === 'about' && <AboutFeaturesEditor />}
                     {activeTab === 'skills' && <SkillsEditor onUpdate={loadStats} />}
                     {activeTab === 'resume' && <ResumeEditor />}
                     {activeTab === 'projects' && <ProjectsEditor onUpdate={loadStats} />}

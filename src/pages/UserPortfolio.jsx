@@ -1,6 +1,7 @@
 import { useParams, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getProfileByUsername } from '../lib/supabase'
+import { useTheme } from '../contexts/ThemeContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Home from './Home'
@@ -15,6 +16,7 @@ const UserPortfolio = () => {
     const [profile, setProfile] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const { setThemeColor } = useTheme()
 
     useEffect(() => {
         loadProfile()
@@ -31,6 +33,10 @@ const UserPortfolio = () => {
             setProfile(null)
         } else {
             setProfile(data)
+            // Apply theme color if available
+            if (data.theme_color) {
+                setThemeColor(data.theme_color)
+            }
         }
 
         setLoading(false)
@@ -72,7 +78,7 @@ const UserPortfolio = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Navbar username={username} />
+            <Navbar username={username} profile={profile} />
             <main className="flex-grow">
                 <Routes>
                     <Route path="/" element={<Home username={username} profile={profile} />} />
@@ -83,7 +89,7 @@ const UserPortfolio = () => {
                     <Route path="*" element={<Navigate to={`/${username}`} replace />} />
                 </Routes>
             </main>
-            <Footer />
+            <Footer username={username} />
         </div>
     )
 }

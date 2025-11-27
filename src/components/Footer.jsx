@@ -1,22 +1,40 @@
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { getProfile } from '../lib/supabase'
 
-const Footer = () => {
+const Footer = ({ username: usernameProp }) => {
+    const { username: usernameParam } = useParams()
+    const username = usernameProp || usernameParam
+    const [profile, setProfile] = useState(null)
     const currentYear = new Date().getFullYear()
 
+    useEffect(() => {
+        if (username) {
+            loadProfile()
+        }
+    }, [username])
+
+    const loadProfile = async () => {
+        const { data } = await getProfile(username)
+        if (data) setProfile(data)
+    }
+
+    const basePath = username ? `/${username}` : ''
+
     const socialLinks = [
-        { icon: Github, href: 'https://github.com', label: 'GitHub' },
-        { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-        { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-        { icon: Mail, href: 'mailto:contact@example.com', label: 'Email' },
+        { icon: Github, href: profile?.github_url || 'https://github.com', label: 'GitHub' },
+        { icon: Linkedin, href: profile?.linkedin_url || 'https://linkedin.com', label: 'LinkedIn' },
+        { icon: Twitter, href: profile?.twitter_url || 'https://twitter.com', label: 'Twitter' },
+        { icon: Mail, href: `mailto:${profile?.email || 'contact@example.com'}`, label: 'Email' },
     ]
 
     const footerLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'About', path: '/about' },
-        { name: 'Resume', path: '/resume' },
-        { name: 'Portfolio', path: '/portfolio' },
-        { name: 'Contact', path: '/contact' },
+        { name: 'Home', path: basePath || '/' },
+        { name: 'About', path: `${basePath}/about` },
+        { name: 'Resume', path: `${basePath}/resume` },
+        { name: 'Portfolio', path: `${basePath}/portfolio` },
+        { name: 'Contact', path: `${basePath}/contact` },
     ]
 
     return (

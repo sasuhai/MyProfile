@@ -4,7 +4,7 @@ import { Moon, Sun, Menu, X, Home, User, Briefcase, FolderGit2, Mail } from 'luc
 import { useTheme } from '../contexts/ThemeContext'
 import { useState } from 'react'
 
-const Navbar = ({ username: usernameProp }) => {
+const Navbar = ({ username: usernameProp, profile }) => {
     const { theme, toggleTheme } = useTheme()
     const location = useLocation()
     const { username: usernameParam } = useParams()
@@ -31,20 +31,38 @@ const Navbar = ({ username: usernameProp }) => {
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-dark-200/20 dark:border-dark-700/20">
             <div className="container-custom">
-                <div className="flex items-center justify-between h-16 sm:h-20">
-                    {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2 group">
-                        <motion.div
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                            className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold text-xl"
-                        >
-                            P
-                        </motion.div>
-                        <span className="font-display text-xl font-bold gradient-text hidden sm:block">
-                            Portfolio
-                        </span>
-                    </Link>
+                <div className="flex items-center justify-between h-20 sm:h-24 py-3">{/* Logo & Profile Info */}
+                    <div className="flex flex-col">
+                        <Link to="/" className="flex items-center space-x-2 group">
+                            <motion.div
+                                whileHover={{ rotate: 360 }}
+                                transition={{ duration: 0.5 }}
+                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold text-xl"
+                            >
+                                P
+                            </motion.div>
+                            <span className="font-display text-xl font-bold gradient-text">
+                                Portfolio
+                            </span>
+                        </Link>
+
+                        {/* Profile Info - Below Logo */}
+                        {profile && (
+                            <div className="flex items-center space-x-2 ml-12 mt-1 text-sm text-dark-600 dark:text-dark-400">
+                                <span className="font-medium text-dark-700 dark:text-dark-300">
+                                    {profile.full_name}
+                                </span>
+                                <span>•</span>
+                                <span className="text-primary-600 dark:text-primary-400">
+                                    @{username}
+                                </span>
+                                <span>•</span>
+                                <span>
+                                    {profile.email}
+                                </span>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-1">

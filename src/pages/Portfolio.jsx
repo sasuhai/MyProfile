@@ -9,6 +9,7 @@ const Portfolio = ({ username: usernameProp }) => {
     const username = usernameProp || usernameParam
     const [projects, setProjects] = useState([])
     const [filter, setFilter] = useState('all')
+    const [expandedProjects, setExpandedProjects] = useState(new Set())
 
     useEffect(() => {
         loadProjects()
@@ -132,9 +133,29 @@ const Portfolio = ({ username: usernameProp }) => {
                                             {project.title}
                                         </h3>
 
-                                        <p className="text-dark-600 dark:text-dark-400 text-sm mb-4 line-clamp-3 whitespace-pre-wrap">
-                                            {project.description}
-                                        </p>
+                                        <div className="mb-4">
+                                            <p className={`text-dark-600 dark:text-dark-400 text-sm whitespace-pre-wrap ${!expandedProjects.has(project.id) ? 'line-clamp-3' : ''}`}>
+                                                {project.description}
+                                            </p>
+                                            {project.description && project.description.length > 150 && (
+                                                <button
+                                                    onClick={() => {
+                                                        setExpandedProjects(prev => {
+                                                            const newSet = new Set(prev)
+                                                            if (newSet.has(project.id)) {
+                                                                newSet.delete(project.id)
+                                                            } else {
+                                                                newSet.add(project.id)
+                                                            }
+                                                            return newSet
+                                                        })
+                                                    }}
+                                                    className="text-primary-600 dark:text-primary-400 text-sm font-medium hover:underline mt-1"
+                                                >
+                                                    {expandedProjects.has(project.id) ? 'Read Less' : 'Read More'}
+                                                </button>
+                                            )}
+                                        </div>
 
                                         {/* Technologies */}
                                         {project.technologies && project.technologies.length > 0 && (

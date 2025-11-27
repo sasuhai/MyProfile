@@ -584,3 +584,92 @@ export const inviteUser = async (email, role = 'user') => {
         }
     }
 }
+
+// ============================================
+// CUSTOM RESUME SECTIONS
+// ============================================
+
+export const getCustomSections = async (username = null) => {
+    const userId = await getUserId(username)
+    console.log('getCustomSections - username:', username, 'userId:', userId)
+
+    if (!userId) return { data: null, error: new Error('User not found') }
+
+    const result = await supabase
+        .from('custom_resume_sections')
+        .select('*')
+        .eq('user_id', userId)
+        .order('display_order', { ascending: true })
+
+    console.log('getCustomSections - query result:', result)
+    return result
+}
+
+export const addCustomSection = async (sectionData) => {
+    const userId = await getUserId()
+    if (!userId) return { data: null, error: new Error('Not authenticated') }
+
+    return await supabase
+        .from('custom_resume_sections')
+        .insert([{ ...sectionData, user_id: userId }])
+        .select()
+        .single()
+}
+
+export const updateCustomSection = async (id, sectionData) => {
+    return await supabase
+        .from('custom_resume_sections')
+        .update(sectionData)
+        .eq('id', id)
+        .select()
+        .single()
+}
+
+export const deleteCustomSection = async (id) => {
+    return await supabase
+        .from('custom_resume_sections')
+        .delete()
+        .eq('id', id)
+}
+
+// ============================================
+// ABOUT FEATURES
+// ============================================
+
+export const getAboutFeatures = async (username = null) => {
+    const userId = await getUserId(username)
+    if (!userId) return { data: null, error: new Error('User not found') }
+
+    return await supabase
+        .from('about_features')
+        .select('*')
+        .eq('user_id', userId)
+        .order('display_order', { ascending: true })
+}
+
+export const addAboutFeature = async (featureData) => {
+    const userId = await getUserId()
+    if (!userId) return { data: null, error: new Error('Not authenticated') }
+
+    return await supabase
+        .from('about_features')
+        .insert([{ ...featureData, user_id: userId }])
+        .select()
+        .single()
+}
+
+export const updateAboutFeature = async (id, featureData) => {
+    return await supabase
+        .from('about_features')
+        .update(featureData)
+        .eq('id', id)
+        .select()
+        .single()
+}
+
+export const deleteAboutFeature = async (id) => {
+    return await supabase
+        .from('about_features')
+        .delete()
+        .eq('id', id)
+}

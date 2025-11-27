@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getEducation, getWorkExperience, getCertifications } from '../lib/supabase'
-import { GraduationCap, Briefcase, Award, Calendar, MapPin, ExternalLink } from 'lucide-react'
+import { getEducation, getWorkExperience, getCertifications, getCustomSections } from '../lib/supabase'
+import { GraduationCap, Briefcase, Award, Calendar, MapPin, ExternalLink, Sparkles } from 'lucide-react'
 
 const Resume = ({ username: usernameProp }) => {
     const { username: usernameParam } = useParams()
@@ -10,19 +10,43 @@ const Resume = ({ username: usernameProp }) => {
     const [education, setEducation] = useState([])
     const [experience, setExperience] = useState([])
     const [certifications, setCertifications] = useState([])
+    const [customSections, setCustomSections] = useState([])
 
     useEffect(() => {
         loadData()
     }, [username])
 
+    // Sort function: by end_date descending, null dates last
+    const sortByEndDate = (items) => {
+        return [...items].sort((a, b) => {
+            const dateA = a.end_date || a.expiry_date
+            const dateB = b.end_date || b.expiry_date
+
+            // If both have no end date, maintain original order
+            if (!dateA && !dateB) return 0
+            // If only A has no end date, put it last
+            if (!dateA) return 1
+            // If only B has no end date, put it last
+            if (!dateB) return -1
+
+            // Both have dates, sort descending (newest first)
+            return new Date(dateB) - new Date(dateA)
+        })
+    }
+
     const loadData = async () => {
         const { data: eduData } = await getEducation(username)
         const { data: expData } = await getWorkExperience(username)
         const { data: certData } = await getCertifications(username)
+        const { data: customData, error: customError } = await getCustomSections(username)
 
-        if (eduData) setEducation(eduData)
-        if (expData) setExperience(expData)
-        if (certData) setCertifications(certData)
+        console.log('Custom sections data:', customData)
+        console.log('Custom sections error:', customError)
+
+        if (eduData) setEducation(sortByEndDate(eduData))
+        if (expData) setExperience(sortByEndDate(expData))
+        if (certData) setCertifications(sortByEndDate(certData))
+        if (customData) setCustomSections(customData) // Custom sections use display_order
     }
 
     const formatDate = (date) => {
@@ -33,8 +57,8 @@ const Resume = ({ username: usernameProp }) => {
     const TimelineItem = ({ item, icon: Icon, type }) => (
         <motion.div
             initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
             className="timeline-item"
         >
             <div className="card p-6 card-hover">
@@ -127,13 +151,12 @@ const Resume = ({ username: usernameProp }) => {
                         <p className="text-lg text-dark-600 dark:text-dark-400 mb-8">
                             My educational background, work experience, and professional certifications
                         </p>
-                        <a
-                            href="/resume.pdf"
-                            download
-                            className="btn btn-primary inline-flex"
+                        <button
+                            onClick={() => window.print()}
+                            className="btn btn-primary inline-flex no-print"
                         >
                             Download PDF Resume
-                        </a>
+                        </button>
                     </motion.div>
                 </div>
             </section>
@@ -143,8 +166,8 @@ const Resume = ({ username: usernameProp }) => {
                 <div className="container-custom max-w-4xl">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="mb-12"
                     >
                         <div className="flex items-center space-x-3 mb-8">
@@ -176,8 +199,8 @@ const Resume = ({ username: usernameProp }) => {
                 <div className="container-custom max-w-4xl">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
                         className="mb-12"
                     >
                         <div className="flex items-center space-x-3 mb-8">
@@ -209,8 +232,8 @@ const Resume = ({ username: usernameProp }) => {
                 <div className="container-custom max-w-4xl">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
                     >
                         <div className="flex items-center space-x-3 mb-8">
                             <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
@@ -225,8 +248,8 @@ const Resume = ({ username: usernameProp }) => {
                                     <motion.div
                                         key={cert.id}
                                         initial={{ opacity: 0, scale: 0.9 }}
-                                        whileInView={{ opacity: 1, scale: 1 }}
-                                        viewport={{ once: true }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ duration: 0.3 }}
                                         className="card p-6 card-hover"
                                     >
                                         <div className="flex items-start space-x-4">
@@ -267,6 +290,32 @@ const Resume = ({ username: usernameProp }) => {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Custom Sections */}
+            {customSections.length > 0 && customSections.map((section) => (
+                <section key={section.id} className="section">
+                    <div className="container-custom max-w-4xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <div className="flex items-center space-x-3 mb-8">
+                                <div className="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                                    <Sparkles className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                                </div>
+                                <h2 className="font-display text-3xl font-bold">{section.title}</h2>
+                            </div>
+
+                            <div className="card p-8">
+                                <p className="text-dark-600 dark:text-dark-400 leading-relaxed whitespace-pre-wrap">
+                                    {section.content}
+                                </p>
+                            </div>
+                        </motion.div>
+                    </div>
+                </section>
+            ))}
         </div>
     )
 }

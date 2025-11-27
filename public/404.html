@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        // Redirect to index.html with the path as a query parameter
+        // This helps with client-side routing on GitHub Pages
+        const path = window.location.pathname.replace('/MyProfile', '');
+        const redirect = '/MyProfile/' + (path === '/' ? '' : '?redirect=' + path);
+        window.location.replace(redirect);
+    </script>
+</head>
+
+<body>
+    <p>Redirecting...</p>
+</body>
+
+</html>

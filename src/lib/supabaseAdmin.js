@@ -3,22 +3,39 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
 const supabaseServiceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY || ''
 
-// Validate configuration
-if (!supabaseUrl) {
-    console.error('❌ VITE_SUPABASE_URL is not set in .env file')
+// Lazy-loaded admin client (only created when needed)
+let _supabaseAdmin = null
+
+const getAdminClient = () => {
+    if (!_supabaseAdmin) {
+        // Validate configuration only when admin client is actually needed
+        if (!supabaseUrl) {
+            throw new Error('VITE_SUPABASE_URL is not set in .env file')
+        }
+
+        if (!supabaseServiceKey) {
+            console.warn('⚠️  VITE_SUPABASE_SERVICE_ROLE_KEY is not set')
+            console.warn('📝 Admin features require the service role key in .env:')
+            console.warn('   VITE_SUPABASE_SERVICE_ROLE_KEY=your_service_role_key')
+            throw new Error('Service role key not configured')
+        }
+
+        // Create admin client with service role (can bypass RLS)
+        _supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            }
+        })
+    }
+    return _supabaseAdmin
 }
 
-if (!supabaseServiceKey) {
-    console.error('❌ VITE_SUPABASE_SERVICE_ROLE_KEY is not set in .env file')
-    console.error('📝 Please add it to your .env file:')
-    console.error('   VITE_SUPABASE_SERVICE_ROLE_KEY=your_service_role_key')
-}
-
-// Admin client with service role (can bypass RLS)
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-        autoRefreshToken: false,
-        persistSession: false
+// Export getter instead of direct client
+export const supabaseAdmin = new Proxy({}, {
+    get: (target, prop) => {
+        const client = getAdminClient()
+        return client[prop]
     }
 })
 

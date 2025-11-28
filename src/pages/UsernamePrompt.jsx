@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User, ArrowRight, Users } from 'lucide-react'
+import { User, ArrowRight } from 'lucide-react'
 
 const UsernamePrompt = () => {
     const [username, setUsername] = useState('')
@@ -63,27 +63,6 @@ const UsernamePrompt = () => {
                             <ArrowRight className="w-5 h-5 ml-2" />
                         </button>
                     </form>
-
-                    {/* Divider */}
-                    <div className="relative my-8">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-dark-200 dark:border-dark-700"></div>
-                        </div>
-                        <div className="relative flex justify-center text-sm">
-                            <span className="px-4 bg-white dark:bg-dark-900 text-dark-500 dark:text-dark-400">
-                                or
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Browse All Link */}
-                    <button
-                        onClick={() => navigate('/all')}
-                        className="btn btn-secondary w-full"
-                    >
-                        <Users className="w-5 h-5 mr-2" />
-                        <span>Browse All Portfolios</span>
-                    </button>
 
                     {/* Admin Link */}
                     <div className="mt-6">

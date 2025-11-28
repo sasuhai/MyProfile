@@ -128,13 +128,13 @@ const Navbar = ({ username: usernameProp, profile }) => {
                         {/* Mobile menu button */}
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors"
+                            className="md:hidden p-2 rounded-lg bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 dark:hover:bg-primary-900/50 transition-colors"
                             aria-label="Toggle menu"
                         >
                             {mobileMenuOpen ? (
-                                <X className="w-6 h-6" />
+                                <X className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                             ) : (
-                                <Menu className="w-6 h-6" />
+                                <Menu className="w-6 h-6 text-primary-600 dark:text-primary-400" />
                             )}
                         </button>
                     </div>

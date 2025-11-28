@@ -31,13 +31,14 @@ const Navbar = ({ username: usernameProp, profile }) => {
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-dark-200/20 dark:border-dark-700/20">
             <div className="container-custom">
-                <div className="flex items-center justify-between h-20 sm:h-24 py-3">{/* Logo & Profile Info */}
-                    <div className="flex flex-col">
+                <div className="flex items-center justify-between h-20 sm:h-24 py-3 gap-2">
+                    {/* Logo & Profile Info */}
+                    <div className="flex flex-col min-w-0 flex-1">
                         <Link to="/" className="flex items-center space-x-2 group">
                             <motion.div
                                 whileHover={{ rotate: 360 }}
                                 transition={{ duration: 0.5 }}
-                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold text-xl"
+                                className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-600 to-primary-400 flex items-center justify-center text-white font-bold text-xl flex-shrink-0"
                             >
                                 P
                             </motion.div>
@@ -46,18 +47,18 @@ const Navbar = ({ username: usernameProp, profile }) => {
                             </span>
                         </Link>
 
-                        {/* Profile Info - Below Logo */}
+                        {/* Profile Info - Below Logo - Hidden on small mobile */}
                         {profile && (
-                            <div className="flex items-center space-x-2 mt-1 text-sm text-dark-600 dark:text-dark-400">
-                                <span className="font-medium text-dark-700 dark:text-dark-300">
+                            <div className="hidden sm:flex items-center space-x-2 mt-1 text-sm text-dark-600 dark:text-dark-400 overflow-hidden">
+                                <span className="font-medium text-dark-700 dark:text-dark-300 truncate">
                                     {profile.full_name}
                                 </span>
                                 <span>•</span>
-                                <span className="text-primary-600 dark:text-primary-400">
+                                <span className="text-primary-600 dark:text-primary-400 truncate">
                                     @{username}
                                 </span>
-                                <span>•</span>
-                                <span>
+                                <span className="hidden md:inline">•</span>
+                                <span className="hidden md:inline truncate">
                                     {profile.email}
                                 </span>
                             </div>
@@ -110,12 +111,12 @@ const Navbar = ({ username: usernameProp, profile }) => {
                     </div>
 
                     {/* Right side actions */}
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 flex-shrink-0">
                         {/* Theme toggle */}
                         <motion.button
                             whileTap={{ scale: 0.95 }}
                             onClick={toggleTheme}
-                            className="p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors"
+                            className="p-2 rounded-lg hover:bg-dark-100 dark:hover:bg-dark-800 transition-colors flex-shrink-0"
                             aria-label="Toggle theme"
                         >
                             {theme === 'dark' ? (
@@ -128,7 +129,7 @@ const Navbar = ({ username: usernameProp, profile }) => {
                         {/* Mobile menu button - Extra prominent */}
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-3 rounded-xl bg-gradient-to-br from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 shadow-lg border-2 border-white dark:border-dark-800 transition-all"
+                            className="md:hidden p-3 rounded-xl bg-gradient-to-br from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 shadow-lg border-2 border-white dark:border-dark-800 transition-all flex-shrink-0"
                             aria-label="Toggle menu"
                         >
                             {mobileMenuOpen ? (

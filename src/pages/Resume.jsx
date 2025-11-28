@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getEducation, getWorkExperience, getCertifications, getCustomSections } from '../lib/supabase'
 import { GraduationCap, Briefcase, Award, Calendar, MapPin, ExternalLink, Sparkles } from 'lucide-react'
 
@@ -151,12 +151,13 @@ const Resume = ({ username: usernameProp }) => {
                         <p className="text-lg text-dark-600 dark:text-dark-400 mb-8">
                             My educational background, work experience, and professional certifications
                         </p>
-                        <button
-                            onClick={() => window.print()}
+                        <Link
+                            to={`/${username}/pdf-resume`}
+                            target="_blank"
                             className="btn btn-primary inline-flex no-print"
                         >
-                            Download PDF Resume
-                        </button>
+                            View Professional PDF Resume
+                        </Link>
                     </motion.div>
                 </div>
             </section>

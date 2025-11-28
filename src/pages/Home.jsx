@@ -125,14 +125,14 @@ const Home = ({ username: usernameProp, profile: profileProp }) => {
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </Link>
 
-                                <a
-                                    href="/resume.pdf"
-                                    download
+                                <Link
+                                    to={`/${username}/pdf-resume`}
+                                    target="_blank"
                                     className="btn btn-secondary group"
                                 >
                                     <Download className="w-5 h-5" />
                                     Download Resume
-                                </a>
+                                </Link>
                             </motion.div>
 
                             <motion.div

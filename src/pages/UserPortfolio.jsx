@@ -9,6 +9,7 @@ import About from './About'
 import Resume from './Resume'
 import Portfolio from './Portfolio'
 import Contact from './Contact'
+import PDFResume from './PDFResume'
 import { motion } from 'framer-motion'
 
 const UserPortfolio = () => {
@@ -84,6 +85,7 @@ const UserPortfolio = () => {
                     <Route path="/" element={<Home username={username} profile={profile} />} />
                     <Route path="/about" element={<About username={username} profile={profile} />} />
                     <Route path="/resume" element={<Resume username={username} profile={profile} />} />
+                    <Route path="/pdf-resume" element={<PDFResume />} />
                     <Route path="/portfolio" element={<Portfolio username={username} profile={profile} />} />
                     <Route path="/contact" element={<Contact username={username} profile={profile} />} />
                     <Route path="*" element={<Navigate to={`/${username}`} replace />} />

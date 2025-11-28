@@ -125,16 +125,16 @@ const Navbar = ({ username: usernameProp, profile }) => {
                             )}
                         </motion.button>
 
-                        {/* Mobile menu button */}
+                        {/* Mobile menu button - Extra prominent */}
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 rounded-lg bg-primary-100 dark:bg-primary-900/30 hover:bg-primary-200 dark:hover:bg-primary-900/50 transition-colors"
+                            className="md:hidden p-3 rounded-xl bg-gradient-to-br from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 shadow-lg border-2 border-white dark:border-dark-800 transition-all"
                             aria-label="Toggle menu"
                         >
                             {mobileMenuOpen ? (
-                                <X className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                                <X className="w-7 h-7 text-white" />
                             ) : (
-                                <Menu className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                                <Menu className="w-7 h-7 text-white" />
                             )}
                         </button>
                     </div>

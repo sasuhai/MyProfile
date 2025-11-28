@@ -96,7 +96,8 @@ const Home = ({ username: usernameProp, profile: profileProp }) => {
                                 </div>
 
                                 <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                                    Hi, I'm{' '}
+                                    Hi, I'm
+                                    <br />
                                     <span className="gradient-text">
                                         {profile?.full_name || 'Your Name'}
                                     </span>
@@ -173,16 +174,16 @@ const Home = ({ username: usernameProp, profile: profileProp }) => {
                                 <div className="absolute -bottom-4 -right-4 w-72 h-72 bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl blur-2xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
 
                                 {/* Image container */}
-                                <div className="relative glass rounded-3xl p-2 shadow-2xl">
-                                    <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary-100 to-primary-50 dark:from-dark-800 dark:to-dark-900 overflow-hidden">
+                                <div className={`relative ${profile?.show_photo_frame !== false ? 'glass rounded-3xl p-2 shadow-2xl' : ''}`}>
+                                    <div className={`aspect-square ${profile?.show_photo_frame !== false ? 'rounded-2xl' : ''} overflow-hidden`}>
                                         {profile?.profile_image_url ? (
                                             <img
                                                 src={profile.profile_image_url}
                                                 alt={profile.full_name}
-                                                className="w-full h-full object-cover"
+                                                className="w-full h-full object-contain"
                                             />
                                         ) : (
-                                            <div className="w-full h-full flex items-center justify-center">
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 dark:from-dark-800 dark:to-dark-900">
                                                 <Code2 className="w-32 h-32 text-primary-300 dark:text-primary-700" />
                                             </div>
                                         )}

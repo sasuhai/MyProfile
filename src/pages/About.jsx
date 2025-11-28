@@ -142,7 +142,14 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
                                 { label: 'Email', value: profile?.email || 'your.email@example.com' },
                                 { label: 'Phone', value: profile?.phone || '+1 (555) 123-4567' },
                                 { label: 'Languages', value: profile?.languages || 'English, Bahasa Malaysia' },
-                                { label: 'Status', value: 'Available for opportunities' },
+                                {
+                                    label: 'Status',
+                                    value: profile?.status === 'available'
+                                        ? 'Available for work'
+                                        : profile?.status === 'open_to_opportunities'
+                                            ? 'Open to opportunities'
+                                            : 'Not available'
+                                },
                             ].map((item) => (
                                 <div key={item.label} className="flex flex-col">
                                     <span className="text-sm text-dark-500 dark:text-dark-400 mb-1">

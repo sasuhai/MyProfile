@@ -21,6 +21,7 @@ const ProfileEditor = () => {
         linkedin_url: '',
         twitter_url: '',
         profile_image_url: '',
+        show_photo_frame: true, // Show frame around profile photo
         status: 'available', // available, not_available, open_to_opportunities
         theme_color: '#3b82f6', // Default blue color
     })
@@ -152,15 +153,17 @@ const ProfileEditor = () => {
                             Profile Image
                         </label>
                         <div className="flex items-center space-x-6">
-                            <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-primary-100 to-primary-50 dark:from-dark-800 dark:to-dark-900 overflow-hidden flex items-center justify-center">
+                            <div className="w-24 h-24 rounded-xl overflow-hidden flex items-center justify-center">
                                 {profile.profile_image_url ? (
                                     <img
                                         src={profile.profile_image_url}
                                         alt="Profile"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-contain"
                                     />
                                 ) : (
-                                    <ImageIcon className="w-12 h-12 text-primary-300 dark:text-primary-700" />
+                                    <div className="w-full h-full bg-gradient-to-br from-primary-100 to-primary-50 dark:from-dark-800 dark:to-dark-900 flex items-center justify-center">
+                                        <ImageIcon className="w-12 h-12 text-primary-300 dark:text-primary-700" />
+                                    </div>
                                 )}
                             </div>
                             <div>
@@ -178,6 +181,17 @@ const ProfileEditor = () => {
                                 <p className="text-sm text-dark-600 dark:text-dark-400 mt-2">
                                     JPG, PNG or GIF. Max 2MB.
                                 </p>
+                                <label className="flex items-center space-x-2 mt-3 cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={profile.show_photo_frame !== false}
+                                        onChange={(e) => setProfile({ ...profile, show_photo_frame: e.target.checked })}
+                                        className="w-4 h-4 text-primary-600 border-dark-300 rounded focus:ring-primary-500"
+                                    />
+                                    <span className="text-sm text-dark-700 dark:text-dark-300">
+                                        Show photo frame
+                                    </span>
+                                </label>
                             </div>
                         </div>
                     </div>

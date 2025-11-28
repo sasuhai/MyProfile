@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { ThemeProvider } from './contexts/ThemeContext'
+import UsernamePrompt from './pages/UsernamePrompt'
 import LandingPage from './pages/LandingPage'
 import UserPortfolio from './pages/UserPortfolio'
 import AdminLogin from './pages/admin/AdminLogin'
@@ -15,8 +16,11 @@ function App() {
         <Router>
           <div className="flex flex-col min-h-screen">
             <Routes>
-              {/* Landing page */}
-              <Route path="/" element={<LandingPage />} />
+              {/* Username prompt at root */}
+              <Route path="/" element={<UsernamePrompt />} />
+
+              {/* Browse all portfolios */}
+              <Route path="/all" element={<LandingPage />} />
 
               {/* Admin routes (no navbar/footer) */}
               <Route path="/admin/login" element={<AdminLogin />} />

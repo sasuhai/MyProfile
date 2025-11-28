@@ -1,0 +1,103 @@
+import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { User, ArrowRight, Users } from 'lucide-react'
+
+const UsernamePrompt = () => {
+    const [username, setUsername] = useState('')
+    const navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (username.trim()) {
+            navigate(`/${username.trim()}`)
+        }
+    }
+
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-dark-950 dark:via-dark-900 dark:to-dark-950 flex items-center justify-center p-4">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-md w-full"
+            >
+                <div className="card p-8 text-center">
+                    {/* Icon */}
+                    <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: 'spring' }}
+                        className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center"
+                    >
+                        <User className="w-10 h-10 text-white" />
+                    </motion.div>
+
+                    {/* Title */}
+                    <h1 className="font-display text-3xl font-bold mb-2">
+                        Welcome to <span className="gradient-text">Portfolio</span>
+                    </h1>
+                    <p className="text-dark-600 dark:text-dark-400 mb-8">
+                        Enter a username to view their portfolio
+                    </p>
+
+                    {/* Form */}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Enter username..."
+                                className="input pl-12 text-center text-lg"
+                                autoFocus
+                            />
+                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={!username.trim()}
+                            className="btn btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <span>View Portfolio</span>
+                            <ArrowRight className="w-5 h-5 ml-2" />
+                        </button>
+                    </form>
+
+                    {/* Divider */}
+                    <div className="relative my-8">
+                        <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-dark-200 dark:border-dark-700"></div>
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                            <span className="px-4 bg-white dark:bg-dark-900 text-dark-500 dark:text-dark-400">
+                                or
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Browse All Link */}
+                    <button
+                        onClick={() => navigate('/all')}
+                        className="btn btn-secondary w-full"
+                    >
+                        <Users className="w-5 h-5 mr-2" />
+                        <span>Browse All Portfolios</span>
+                    </button>
+
+                    {/* Admin Link */}
+                    <div className="mt-6">
+                        <button
+                            onClick={() => navigate('/admin/login')}
+                            className="text-sm text-dark-500 dark:text-dark-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                        >
+                            Admin Access →
+                        </button>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+    )
+}
+
+export default UsernamePrompt

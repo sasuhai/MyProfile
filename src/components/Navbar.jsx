@@ -48,7 +48,7 @@ const Navbar = ({ username: usernameProp, profile }) => {
 
                         {/* Profile Info - Below Logo */}
                         {profile && (
-                            <div className="flex items-center space-x-2 ml-12 mt-1 text-sm text-dark-600 dark:text-dark-400">
+                            <div className="flex items-center space-x-2 mt-1 text-sm text-dark-600 dark:text-dark-400">
                                 <span className="font-medium text-dark-700 dark:text-dark-300">
                                     {profile.full_name}
                                 </span>

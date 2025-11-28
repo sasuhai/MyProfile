@@ -140,6 +140,7 @@ const About = ({ username: usernameProp, profile: profileProp }) => {
                             {[
                                 { label: 'Location', value: profile?.location || 'City, Country' },
                                 { label: 'Email', value: profile?.email || 'your.email@example.com' },
+                                { label: 'Phone', value: profile?.phone || '+1 (555) 123-4567' },
                                 { label: 'Languages', value: profile?.languages || 'English, Bahasa Malaysia' },
                                 { label: 'Status', value: 'Available for opportunities' },
                             ].map((item) => (

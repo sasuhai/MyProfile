@@ -14,6 +14,7 @@ const ProfileEditor = () => {
         bio: '',
         about: '',
         email: '',
+        phone: '',
         location: '',
         languages: '',
         github_url: '',
@@ -342,6 +343,23 @@ const ProfileEditor = () => {
                             />
                         </div>
 
+                        <div>
+                            <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                                Phone Number
+                            </label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                value={profile.phone || ''}
+                                onChange={handleChange}
+                                className="input"
+                                placeholder="+1 (555) 123-4567"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="location" className="block text-sm font-medium mb-2">
                                 Location

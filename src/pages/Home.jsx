@@ -95,7 +95,7 @@ const Home = ({ username: usernameProp, profile: profileProp }) => {
                                     </span>
                                 </div>
 
-                                <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+                                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
                                     Hi, I'm{' '}
                                     <span className="gradient-text">
                                         {profile?.full_name || 'Your Name'}

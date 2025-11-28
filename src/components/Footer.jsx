@@ -59,7 +59,7 @@ const Footer = ({ username: usernameProp }) => {
                     {/* Quick Links */}
                     <div>
                         <h3 className="font-display font-semibold mb-4">Quick Links</h3>
-                        <ul className="space-y-2">
+                        <ul className="grid grid-cols-2 gap-x-4 gap-y-1">
                             {footerLinks.map((link) => (
                                 <li key={link.path}>
                                     <Link

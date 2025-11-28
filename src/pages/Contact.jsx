@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { addContactMessage, getProfileByUsername } from '../lib/supabase'
-import { Mail, MapPin, Send, CheckCircle, Github, Linkedin, Twitter } from 'lucide-react'
+import { Mail, MapPin, Phone, Send, CheckCircle, Github, Linkedin, Twitter } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 const Contact = ({ username: usernameProp, profile: profileProp }) => {
@@ -66,6 +66,12 @@ const Contact = ({ username: usernameProp, profile: profileProp }) => {
             label: 'Email',
             value: profile?.email || 'your.email@example.com',
             href: `mailto:${profile?.email || 'your.email@example.com'}`,
+        },
+        {
+            icon: Phone,
+            label: 'Phone',
+            value: profile?.phone || '+1 (555) 123-4567',
+            href: `tel:${profile?.phone || '+15551234567'}`,
         },
         {
             icon: MapPin,

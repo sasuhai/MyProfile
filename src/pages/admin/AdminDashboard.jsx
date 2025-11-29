@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import {
     getAllProjects,
@@ -13,7 +13,7 @@ import {
 import { supabase } from '../../lib/supabase'
 import {
     LogOut, User, Briefcase, FolderGit2, Award, MessageSquare,
-    Settings, BarChart3, Plus, Edit, Trash2, Eye, EyeOff, Users, Info
+    Settings, BarChart3, Plus, Edit, Trash2, Eye, EyeOff, Users, Info, UserCheck
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ProfileEditor from '../../components/admin/ProfileEditor'
@@ -23,10 +23,12 @@ import ResumeEditor from '../../components/admin/ResumeEditor'
 import MessagesViewer from '../../components/admin/MessagesViewer'
 import UserManagement from '../../components/admin/UserManagement'
 import AboutFeaturesEditor from '../../components/admin/AboutFeaturesEditor'
+import AccessRequestsManager from '../../components/admin/AccessRequestsManager'
 
 const AdminDashboard = () => {
     const { user, loading: authLoading } = useAuth()
     const navigate = useNavigate()
+    const location = useLocation()
     const [activeTab, setActiveTab] = useState('overview')
     const [userProfile, setUserProfile] = useState(null)
     const [stats, setStats] = useState({
@@ -34,6 +36,7 @@ const AdminDashboard = () => {
         skills: 0,
         messages: 0,
     })
+    const [pendingRequests, setPendingRequests] = useState(0)
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -41,19 +44,36 @@ const AdminDashboard = () => {
         }
     }, [user, authLoading, navigate])
 
+    // Check for tab query parameter
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const tab = params.get('tab')
+        if (tab) {
+            setActiveTab(tab)
+        }
+    }, [location.search])
+
     useEffect(() => {
         if (user) {
             loadStats()
             loadUserProfile()
+            loadPendingRequests()
         }
     }, [user])
+
+    // Reload pending requests when user profile is loaded (to check admin role)
+    useEffect(() => {
+        if (userProfile?.role === 'admin') {
+            loadPendingRequests()
+        }
+    }, [userProfile])
 
     const loadUserProfile = async () => {
         const currentUser = await getCurrentUser()
         if (currentUser) {
             const { data } = await supabase
                 .from('profile_info')
-                .select('username, full_name, email')
+                .select('username, full_name, email, role')
                 .eq('user_id', currentUser.id)
                 .single()
             if (data) {
@@ -72,6 +92,24 @@ const AdminDashboard = () => {
             skills: skills?.length || 0,
             messages: messages?.length || 0,
         })
+    }
+
+    const loadPendingRequests = async () => {
+        // Only load if user is admin
+        if (userProfile?.role !== 'admin') return
+
+        try {
+            const { count, error } = await supabase
+                .from('access_requests')
+                .select('*', { count: 'exact', head: true })
+                .eq('status', 'pending')
+
+            if (!error) {
+                setPendingRequests(count || 0)
+            }
+        } catch (error) {
+            console.error('Error loading pending requests:', error)
+        }
     }
 
     const handleSignOut = async () => {
@@ -108,6 +146,7 @@ const AdminDashboard = () => {
         return null
     }
 
+    // Build tabs array - conditionally include admin-only tabs
     const tabs = [
         { id: 'overview', label: 'Overview', icon: BarChart3 },
         { id: 'profile', label: 'Profile', icon: User },
@@ -116,7 +155,11 @@ const AdminDashboard = () => {
         { id: 'resume', label: 'Resume', icon: Briefcase },
         { id: 'projects', label: 'Projects', icon: FolderGit2 },
         { id: 'messages', label: 'Messages', icon: MessageSquare },
-        { id: 'users', label: 'User Management', icon: Users },
+        // Admin-only tabs at the end
+        ...(userProfile?.role === 'admin' ? [
+            { id: 'access-requests', label: 'Access Requests', icon: UserCheck, badge: pendingRequests },
+            { id: 'users', label: 'User Mgmt', icon: Users }
+        ] : []),
     ]
 
     return (
@@ -171,6 +214,14 @@ const AdminDashboard = () => {
                                     <Icon className="w-4 h-4 flex-shrink-0" />
                                     <span className="hidden sm:inline">{tab.label}</span>
                                     <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
+                                    {tab.badge > 0 && (
+                                        <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${activeTab === tab.id
+                                            ? 'bg-white text-primary-600'
+                                            : 'bg-red-600 text-white'
+                                            }`}>
+                                            {tab.badge}
+                                        </span>
+                                    )}
                                 </button>
                             )
                         })}
@@ -270,6 +321,7 @@ const AdminDashboard = () => {
                     )}
 
                     {activeTab === 'profile' && <ProfileEditor />}
+                    {activeTab === 'access-requests' && <AccessRequestsManager />}
                     {activeTab === 'about' && <AboutFeaturesEditor />}
                     {activeTab === 'skills' && <SkillsEditor onUpdate={loadStats} />}
                     {activeTab === 'resume' && <ResumeEditor />}

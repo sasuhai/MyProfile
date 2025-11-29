@@ -2,8 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signIn, resetUserPassword } from '../../lib/supabase'
+import { supabase } from '../../lib/supabase'
 import { Lock, Mail, LogIn, KeyRound, X } from 'lucide-react'
 import toast from 'react-hot-toast'
+import ChangePasswordModal from '../../components/admin/ChangePasswordModal'
 
 const AdminLogin = () => {
     const navigate = useNavigate()
@@ -15,6 +17,8 @@ const AdminLogin = () => {
     const [showForgotPassword, setShowForgotPassword] = useState(false)
     const [resetEmail, setResetEmail] = useState('')
     const [resetLoading, setResetLoading] = useState(false)
+    const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false)
+    const [mustChangePassword, setMustChangePassword] = useState(false)
 
     const handleChange = (e) => {
         setFormData({
@@ -32,8 +36,22 @@ const AdminLogin = () => {
 
             if (error) throw error
 
-            toast.success('Login successful!')
-            navigate('/admin/dashboard')
+            // Check if user must change password
+            const { data: profile } = await supabase
+                .from('profile_info')
+                .select('must_change_password')
+                .eq('user_id', data.user.id)
+                .single()
+
+            if (profile?.must_change_password) {
+                // Show password change modal instead of navigating
+                setMustChangePassword(true)
+                setShowPasswordChangeModal(true)
+                toast.success('Login successful! Please change your password.')
+            } else {
+                toast.success('Login successful!')
+                navigate('/admin/dashboard')
+            }
         } catch (error) {
             console.error('Login error:', error)
             toast.error(error.message || 'Invalid credentials')
@@ -338,6 +356,17 @@ const AdminLogin = () => {
                     </>
                 )}
             </AnimatePresence>
+
+            {/* Change Password Modal */}
+            <ChangePasswordModal
+                isOpen={showPasswordChangeModal}
+                onClose={() => {
+                    setShowPasswordChangeModal(false)
+                    // After password change, navigate to dashboard
+                    navigate('/admin/dashboard')
+                }}
+                isForced={mustChangePassword}
+            />
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { User, ArrowRight } from 'lucide-react'
+import { User, Sparkles } from 'lucide-react'
 
 const UsernamePrompt = () => {
     const [username, setUsername] = useState('')
@@ -59,18 +59,18 @@ const UsernamePrompt = () => {
                             disabled={!username.trim()}
                             className="btn btn-primary w-full text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <span>View Portfolio</span>
-                            <ArrowRight className="w-5 h-5 ml-2" />
+                            View Portfolio
                         </button>
                     </form>
 
-                    {/* Admin Link */}
-                    <div className="mt-6">
+                    {/* About Link */}
+                    <div className="mt-6 text-center">
                         <button
-                            onClick={() => navigate('/admin/login')}
-                            className="text-sm text-dark-500 dark:text-dark-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                            onClick={() => navigate('/about')}
+                            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors inline-flex items-center space-x-1 font-medium"
                         >
-                            Admin Access →
+                            <Sparkles className="w-4 h-4" />
+                            <span>About this App</span>
                         </button>
                     </div>
                 </div>

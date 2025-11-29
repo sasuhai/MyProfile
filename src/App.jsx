@@ -8,6 +8,7 @@ import UserPortfolio from './pages/UserPortfolio'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ResetPassword from './pages/ResetPassword'
+import MarketingPortal from './pages/admin/MarketingPortal'
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
 
               {/* Browse all portfolios */}
               <Route path="/all" element={<LandingPage />} />
+
+              {/* Public marketing portal */}
+              <Route path="/about" element={<MarketingPortal />} />
 
               {/* Admin routes (no navbar/footer) */}
               <Route path="/admin/login" element={<AdminLogin />} />

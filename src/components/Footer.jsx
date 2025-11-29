@@ -100,7 +100,7 @@ const Footer = ({ username: usernameProp }) => {
                 <div className="pt-8 border-t border-dark-200 dark:border-dark-800">
                     <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
                         <p className="text-dark-600 dark:text-dark-400 text-sm">
-                            © {currentYear} Portfolio. All rights reserved.
+                            Idiahus © 2026 Portfolio. All rights reserved.
                         </p>
                         <p className="text-dark-600 dark:text-dark-400 text-sm flex items-center">
                             Made with <Heart className="w-4 h-4 mx-1 text-red-500 fill-current" /> using React & Supabase

@@ -8,9 +8,10 @@ import {
     isCurrentUserAdmin,
     getCurrentUser
 } from '../../lib/supabase'
-import { createUserWithProfile } from '../../lib/supabaseAdmin'
+import { createUserWithProfile, deleteUserAndProfile } from '../../lib/supabaseAdmin'
 import { Users, Shield, User, Mail, Calendar, Key, UserPlus, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
+import DeleteUserModal from './DeleteUserModal'
 
 const UserManagement = () => {
     const [users, setUsers] = useState([])
@@ -27,6 +28,9 @@ const UserManagement = () => {
         username: '',
         role: 'user'
     })
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [userToDelete, setUserToDelete] = useState(null)
+    const [isDeleting, setIsDeleting] = useState(false)
 
     useEffect(() => {
         checkAdminAndLoadData()
@@ -128,6 +132,47 @@ const UserManagement = () => {
             toast.error('An unexpected error occurred')
         } finally {
             setCreatingUser(false)
+        }
+    }
+
+    const handleDeleteUser = async (user) => {
+        // Prevent deleting yourself
+        if (user.user_id === currentUserId) {
+            toast.error('You cannot delete your own account')
+            return
+        }
+
+        // Open modal for confirmation
+        setUserToDelete(user)
+        setShowDeleteModal(true)
+    }
+
+    const confirmDeleteUser = async () => {
+        if (!userToDelete) return
+
+        setIsDeleting(true)
+
+        try {
+            const result = await deleteUserAndProfile(userToDelete.user_id)
+
+            if (result.success) {
+                toast.success('User deleted successfully')
+
+                // Close modal and reset state
+                setShowDeleteModal(false)
+                setUserToDelete(null)
+
+                // Reload users list
+                await loadUsers()
+                await loadStats()
+            } else {
+                toast.error(result.error || 'Failed to delete user')
+            }
+        } catch (error) {
+            console.error('Delete user error:', error)
+            toast.error('An unexpected error occurred')
+        } finally {
+            setIsDeleting(false)
         }
     }
 
@@ -389,6 +434,16 @@ const UserManagement = () => {
                                         <Key className="w-4 h-4" />
                                         Reset Password
                                     </button>
+
+                                    <button
+                                        onClick={() => handleDeleteUser(user)}
+                                        disabled={user.user_id === currentUserId}
+                                        className="btn bg-red-600 hover:bg-red-700 text-white disabled:opacity-50 disabled:cursor-not-allowed text-sm py-1"
+                                        title={user.user_id === currentUserId ? "You cannot delete your own account" : "Delete user"}
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        Delete User
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -402,6 +457,19 @@ const UserManagement = () => {
                     )}
                 </div>
             </div>
+
+            {/* Delete User Modal */}
+            <DeleteUserModal
+                isOpen={showDeleteModal}
+                onClose={() => {
+                    setShowDeleteModal(false)
+                    setUserToDelete(null)
+                    setIsDeleting(false)
+                }}
+                onConfirm={confirmDeleteUser}
+                user={userToDelete}
+                isDeleting={isDeleting}
+            />
         </motion.div>
     )
 }

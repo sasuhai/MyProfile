@@ -66,17 +66,11 @@ export const createUserWithProfile = async (userData) => {
 
         const { email, password, fullName, username, role = 'user' } = userData
 
-        // Create user in auth.users with metadata
-        // The trigger will automatically create the profile
+        // Create user in auth.users
         const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
             email,
             password,
             email_confirm: true, // Auto-confirm email
-            user_metadata: {
-                full_name: fullName,
-                username: username,
-                role: role
-            }
         })
 
         if (authError) {
@@ -87,20 +81,24 @@ export const createUserWithProfile = async (userData) => {
             throw new Error('User creation failed')
         }
 
-        // Wait a moment for trigger to complete
-        await new Promise(resolve => setTimeout(resolve, 500))
-
-        // Verify profile was created by trigger
-        const { data: profile, error: profileError } = await supabaseAdmin
+        // Manually create profile (don't rely on trigger due to RLS issues)
+        const { data: profileData, error: profileError } = await supabaseAdmin
             .from('profile_info')
-            .select('*')
-            .eq('user_id', authData.user.id)
+            .insert({
+                user_id: authData.user.id,
+                email: email,
+                full_name: fullName,
+                username: username,
+                role: role,
+                must_change_password: true
+            })
+            .select()
             .single()
 
-        if (profileError || !profile) {
-            // If profile wasn't created by trigger, delete the auth user and throw error
+        if (profileError) {
+            // If profile creation fails, delete the auth user
             await supabaseAdmin.auth.admin.deleteUser(authData.user.id)
-            throw new Error('Profile creation failed. Please make sure the trigger is set up correctly.')
+            throw new Error(`Profile creation failed: ${profileError.message}`)
         }
 
         return {
@@ -108,8 +106,8 @@ export const createUserWithProfile = async (userData) => {
             data: {
                 userId: authData.user.id,
                 email: email,
-                username: profile.username,
-                role: profile.role
+                username: profileData.username,
+                role: profileData.role
             },
             error: null
         }
@@ -125,22 +123,74 @@ export const createUserWithProfile = async (userData) => {
 }
 
 /**
- * Delete a user and their profile (Admin only)
+ * Delete a user and their profile with storage cleanup (Admin only)
  * @param {string} userId - User ID to delete
+ * @param {boolean} deleteStorageFiles - Whether to delete storage files (default: true)
  */
-export const deleteUserAndProfile = async (userId) => {
+export const deleteUserAndProfile = async (userId, deleteStorageFiles = true) => {
     try {
-        // Delete profile first
-        const { error: profileError } = await supabaseAdmin
-            .from('profile_info')
-            .delete()
-            .eq('user_id', userId)
+        const deletedFiles = []
+        const errors = []
 
-        if (profileError) {
-            throw new Error(`Profile deletion error: ${profileError.message}`)
+        // Step 1: Get user's profile and project images before deletion
+        if (deleteStorageFiles) {
+            try {
+                // Get profile image
+                const { data: profile } = await supabaseAdmin
+                    .from('profile_info')
+                    .select('profile_image_url')
+                    .eq('user_id', userId)
+                    .single()
+
+                // Get project images
+                const { data: projects } = await supabaseAdmin
+                    .from('projects')
+                    .select('image_url')
+                    .eq('user_id', userId)
+
+                // Delete profile image from storage
+                if (profile?.profile_image_url) {
+                    const imagePath = extractStoragePath(profile.profile_image_url, 'profile-images')
+                    if (imagePath) {
+                        const { error } = await supabaseAdmin.storage
+                            .from('profile-images')
+                            .remove([imagePath])
+
+                        if (error) {
+                            errors.push(`Profile image: ${error.message}`)
+                        } else {
+                            deletedFiles.push(`profile-images/${imagePath}`)
+                        }
+                    }
+                }
+
+                // Delete project images from storage
+                if (projects && projects.length > 0) {
+                    for (const project of projects) {
+                        if (project.image_url) {
+                            const imagePath = extractStoragePath(project.image_url, 'project-images')
+                            if (imagePath) {
+                                const { error } = await supabaseAdmin.storage
+                                    .from('project-images')
+                                    .remove([imagePath])
+
+                                if (error) {
+                                    errors.push(`Project image: ${error.message}`)
+                                } else {
+                                    deletedFiles.push(`project-images/${imagePath}`)
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (storageError) {
+                console.warn('Storage cleanup warning:', storageError)
+                errors.push(`Storage cleanup: ${storageError.message}`)
+                // Continue with user deletion even if storage cleanup fails
+            }
         }
 
-        // Delete auth user
+        // Step 2: Delete auth user (CASCADE will delete all database records)
         const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId)
 
         if (authError) {
@@ -149,15 +199,48 @@ export const deleteUserAndProfile = async (userId) => {
 
         return {
             success: true,
-            error: null
+            error: null,
+            deletedFiles: deletedFiles,
+            storageErrors: errors.length > 0 ? errors : null,
+            message: `User deleted successfully. ${deletedFiles.length} storage files removed.`
         }
 
     } catch (error) {
         console.error('Delete user error:', error)
         return {
             success: false,
-            error: error.message || 'Failed to delete user'
+            error: error.message || 'Failed to delete user',
+            deletedFiles: [],
+            storageErrors: null
         }
+    }
+}
+
+/**
+ * Helper function to extract storage path from URL
+ * @param {string} url - Full storage URL
+ * @param {string} bucket - Bucket name
+ * @returns {string|null} - Storage path or null
+ */
+const extractStoragePath = (url, bucket) => {
+    if (!url) return null
+
+    try {
+        // Handle Supabase storage URLs
+        // Format: https://{project}.supabase.co/storage/v1/object/public/{bucket}/{path}
+        const urlObj = new URL(url)
+        const pathParts = urlObj.pathname.split('/')
+        const bucketIndex = pathParts.indexOf(bucket)
+
+        if (bucketIndex !== -1 && bucketIndex < pathParts.length - 1) {
+            // Get everything after the bucket name
+            return pathParts.slice(bucketIndex + 1).join('/')
+        }
+
+        return null
+    } catch (error) {
+        console.warn('Error extracting storage path:', error)
+        return null
     }
 }
 

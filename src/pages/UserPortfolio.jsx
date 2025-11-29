@@ -4,6 +4,7 @@ import { getProfileByUsername } from '../lib/supabase'
 import { useTheme } from '../contexts/ThemeContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import MobilePageNavigation from '../components/MobilePageNavigation'
 import Home from './Home'
 import About from './About'
 import Resume from './Resume'
@@ -91,6 +92,7 @@ const UserPortfolio = () => {
                     <Route path="*" element={<Navigate to={`/${username}`} replace />} />
                 </Routes>
             </main>
+            <MobilePageNavigation username={username} />
             <Footer username={username} />
         </div>
     )

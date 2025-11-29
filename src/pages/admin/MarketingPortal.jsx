@@ -201,8 +201,8 @@ const MarketingPortal = () => {
                 </div>
 
                 <div className="container-custom max-w-6xl relative">
-                    {/* Hero Image - Right Side */}
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-2/3 lg:w-1/2 h-full pointer-events-none">
+                    {/* Hero Image - Right Side (Desktop Only) */}
+                    <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full pointer-events-none">
                         <img
                             src="/hero-image.png"
                             alt="Hero"
@@ -267,6 +267,25 @@ const MarketingPortal = () => {
                                 <div className="text-sm text-dark-600 dark:text-dark-400">{stat.label}</div>
                             </div>
                         ))}
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* Hero Image Section - Mobile Only */}
+            <section className="lg:hidden py-12 px-4 bg-gradient-to-b from-dark-50 to-white dark:from-dark-900 dark:to-dark-950">
+                <div className="container-custom max-w-2xl">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="relative"
+                    >
+                        <img
+                            src="/hero-image.png"
+                            alt="Portfolio Preview"
+                            className="w-full h-auto object-contain opacity-80"
+                        />
                     </motion.div>
                 </div>
             </section>

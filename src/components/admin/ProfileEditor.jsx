@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react'
 import { getCurrentUser, updateProfile, uploadFile } from '../../lib/supabase'
 import { supabase } from '../../lib/supabase'
 import { useTheme } from '../../contexts/ThemeContext'
-import { Save, Upload, Image as ImageIcon } from 'lucide-react'
+import { Save, Upload, Image as ImageIcon, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useUnsavedChanges, useFormChanges } from '../../hooks/useUnsavedChanges'
 
 const ProfileEditor = () => {
     const { setThemeColor } = useTheme()
     const [profile, setProfile] = useState({
         full_name: '',
+        username: '',
         tagline: '',
         bio: '',
         about: '',
@@ -27,6 +29,7 @@ const ProfileEditor = () => {
     })
     const [loading, setLoading] = useState(false)
     const [uploading, setUploading] = useState(false)
+    const [initialProfile, setInitialProfile] = useState(null)
 
     useEffect(() => {
         loadProfile()
@@ -55,6 +58,7 @@ const ProfileEditor = () => {
 
         if (data) {
             setProfile(data)
+            setInitialProfile(data) // Store initial data for comparison
             // Apply initial theme color
             if (data.theme_color) {
                 setThemeColor(data.theme_color)
@@ -114,6 +118,31 @@ const ProfileEditor = () => {
         setLoading(true)
 
         try {
+            // Get current user to exclude from username check
+            const currentUser = await getCurrentUser()
+            if (!currentUser) {
+                throw new Error('Not authenticated')
+            }
+
+            // Check if username is unique (excluding current user)
+            const { data: existingUser, error: checkError } = await supabase
+                .from('profile_info')
+                .select('user_id')
+                .eq('username', profile.username)
+                .neq('user_id', currentUser.id)
+                .single()
+
+            if (checkError && checkError.code !== 'PGRST116') {
+                // PGRST116 means no rows found, which is what we want
+                throw checkError
+            }
+
+            if (existingUser) {
+                toast.error('Username is already taken. Please choose a different one.')
+                setLoading(false)
+                return
+            }
+
             // Ensure theme_color has a value
             const profileData = {
                 ...profile,
@@ -128,6 +157,7 @@ const ProfileEditor = () => {
             }
 
             toast.success('Profile updated successfully!')
+            setInitialProfile(profileData) // Update initial data after successful save
         } catch (error) {
             console.error('Update error:', error)
             toast.error(error.message || 'Failed to update profile')
@@ -135,6 +165,10 @@ const ProfileEditor = () => {
             setLoading(false)
         }
     }
+
+    // Track unsaved changes (must be after handleSubmit is defined)
+    const hasUnsavedChanges = useFormChanges(initialProfile, profile)
+    const { promptBeforeLeaving } = useUnsavedChanges(hasUnsavedChanges, handleSubmit)
 
     return (
         <motion.div
@@ -145,6 +179,21 @@ const ProfileEditor = () => {
                 <h2 className="font-display text-2xl font-bold mb-6">
                     Edit Profile Information
                 </h2>
+
+                {/* Unsaved Changes Warning */}
+                {hasUnsavedChanges && (
+                    <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg flex items-start space-x-3">
+                        <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                            <p className="text-sm font-medium text-amber-900 dark:text-amber-100">
+                                You have unsaved changes
+                            </p>
+                            <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                Don't forget to save your changes before leaving this page.
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Profile Image */}
@@ -227,6 +276,29 @@ const ProfileEditor = () => {
                                 className="input"
                                 placeholder="Aspiring Software Engineer"
                             />
+                        </div>
+
+                        <div>
+                            <label htmlFor="username" className="block text-sm font-medium mb-2">
+                                Username * (Portfolio URL)
+                            </label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                value={profile.username || ''}
+                                onChange={handleChange}
+                                required
+                                pattern="[a-z0-9]+"
+                                className="input font-mono"
+                                placeholder="johndoe"
+                            />
+                            <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                                ⚠️ Changing username will change your portfolio URL to: <span className="font-mono font-semibold">/{profile.username || 'username'}</span>
+                            </p>
+                            <p className="text-xs text-dark-500 dark:text-dark-400 mt-0.5">
+                                Only lowercase letters and numbers allowed (no spaces or special characters)
+                            </p>
                         </div>
 
                         <div>
@@ -343,18 +415,21 @@ const ProfileEditor = () => {
                     <div className="grid md:grid-cols-2 gap-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium mb-2">
-                                Email *
+                                Email * (Login Credential)
                             </label>
                             <input
                                 type="email"
                                 id="email"
                                 name="email"
                                 value={profile.email || ''}
-                                onChange={handleChange}
-                                required
-                                className="input"
+                                readOnly
+                                disabled
+                                className="input bg-dark-100 dark:bg-dark-900 cursor-not-allowed opacity-75"
                                 placeholder="your.email@example.com"
                             />
+                            <p className="text-xs text-dark-500 dark:text-dark-400 mt-1">
+                                🔒 Email cannot be changed as it's used for login authentication
+                            </p>
                         </div>
 
                         <div>

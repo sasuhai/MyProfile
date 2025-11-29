@@ -63,13 +63,13 @@ const UsernamePrompt = () => {
                         </button>
                     </form>
 
-                    {/* About Link */}
-                    <div className="mt-6 text-center">
+                    {/* About Button */}
+                    <div className="mt-4">
                         <button
                             onClick={() => navigate('/about')}
-                            className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors inline-flex items-center space-x-1 font-medium"
+                            className="btn btn-primary w-full text-lg inline-flex items-center justify-center space-x-2"
                         >
-                            <Sparkles className="w-4 h-4" />
+                            <Sparkles className="w-5 h-5" />
                             <span>About this App</span>
                         </button>
                     </div>

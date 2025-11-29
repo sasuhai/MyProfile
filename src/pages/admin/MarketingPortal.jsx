@@ -200,12 +200,21 @@ const MarketingPortal = () => {
                     <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
                 </div>
 
-                <div className="container-custom max-w-6xl">
+                <div className="container-custom max-w-6xl relative">
+                    {/* Hero Image - Right Side */}
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-2/3 lg:w-1/2 h-full pointer-events-none">
+                        <img
+                            src="/hero-image.png"
+                            alt="Hero"
+                            className="w-full h-full object-contain opacity-45"
+                        />
+                    </div>
+
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="text-center mb-16"
+                        className="text-center mb-16 relative z-10"
                     >
                         <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 mb-6">
                             <Sparkles className="w-4 h-4" />
@@ -234,7 +243,7 @@ const MarketingPortal = () => {
                                 <ArrowRight className="w-5 h-5" />
                             </button>
                             <a
-                                href="/"
+                                href="/idiahus"
                                 className="btn btn-secondary text-lg px-8 py-4"
                             >
                                 <ExternalLink className="w-5 h-5" />
@@ -242,6 +251,7 @@ const MarketingPortal = () => {
                             </a>
                         </div>
                     </motion.div>
+
 
                     {/* Stats */}
                     <motion.div

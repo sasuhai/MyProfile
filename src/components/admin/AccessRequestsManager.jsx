@@ -8,6 +8,7 @@ import { supabase } from '../../lib/supabase'
 import { createUserWithProfile } from '../../lib/supabaseAdmin'
 import toast from 'react-hot-toast'
 import RejectRequestModal from './RejectRequestModal'
+import ApprovalSuccessModal from './ApprovalSuccessModal'
 
 const AccessRequestsManager = () => {
     const [requests, setRequests] = useState([])
@@ -17,6 +18,8 @@ const AccessRequestsManager = () => {
     const [showRejectModal, setShowRejectModal] = useState(false)
     const [requestToReject, setRequestToReject] = useState(null)
     const [isRejecting, setIsRejecting] = useState(false)
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [approvedCredentials, setApprovedCredentials] = useState(null)
 
     useEffect(() => {
         loadRequests()
@@ -86,21 +89,14 @@ const AccessRequestsManager = () => {
 
             if (updateError) throw updateError
 
-            // Send email to user with credentials via Edge Function
-            try {
-                await supabase.functions.invoke('notify-user-approved', {
-                    body: {
-                        email: request.email,
-                        fullName: request.full_name,
-                        username: result.data.username,
-                        tempPassword: tempPassword
-                    }
-                })
-                console.log('Approval email sent to:', request.email)
-            } catch (emailError) {
-                console.error('Failed to send approval email:', emailError)
-                // Don't fail the approval if email fails
-            }
+            // Show success modal with credentials for admin to send to user
+            setApprovedCredentials({
+                email: request.email,
+                fullName: request.full_name,
+                username: result.data.username,
+                tempPassword: tempPassword
+            })
+            setShowSuccessModal(true)
 
             toast.success(`Access approved for ${request.full_name}`)
             loadRequests()
@@ -348,6 +344,16 @@ const AccessRequestsManager = () => {
                 onConfirm={confirmReject}
                 request={requestToReject}
                 isRejecting={isRejecting}
+            />
+
+            {/* Approval Success Modal */}
+            <ApprovalSuccessModal
+                isOpen={showSuccessModal}
+                onClose={() => {
+                    setShowSuccessModal(false)
+                    setApprovedCredentials(null)
+                }}
+                credentials={approvedCredentials}
             />
         </div>
     )

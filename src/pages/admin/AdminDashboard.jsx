@@ -114,8 +114,21 @@ const AdminDashboard = () => {
 
     const handleSignOut = async () => {
         try {
-            // Get username before signing out
-            const username = userProfile?.username
+            // Fetch fresh username from database (in case it was changed)
+            const currentUser = await getCurrentUser()
+            let username = userProfile?.username
+
+            if (currentUser) {
+                const { data } = await supabase
+                    .from('profile_info')
+                    .select('username')
+                    .eq('user_id', currentUser.id)
+                    .single()
+
+                if (data?.username) {
+                    username = data.username
+                }
+            }
 
             // Sign out
             await signOut()

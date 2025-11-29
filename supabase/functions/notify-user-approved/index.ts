@@ -26,8 +26,8 @@ serve(async (req) => {
 
         const appUrl = Deno.env.get('APP_URL') || 'http://localhost:5173'
 
-        // Send email using password reset as notification
-        // The user will click the link and be prompted to change their password
+        // Send a simple password reset email
+        // This is the simplest way without needing external email services
         const { error: emailError } = await supabaseClient.auth.resetPasswordForEmail(
             email,
             {
@@ -47,7 +47,12 @@ serve(async (req) => {
             JSON.stringify({
                 success: true,
                 message: `Approval email sent to ${email}`,
-                note: 'User will receive a password reset email to set their password'
+                credentials: {
+                    username: username,
+                    tempPassword: tempPassword,
+                    loginUrl: `${appUrl}/admin/login`
+                },
+                note: 'User credentials logged for admin reference. User will receive password reset email.'
             }),
             { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         )
@@ -59,3 +64,4 @@ serve(async (req) => {
         )
     }
 })
+    ```

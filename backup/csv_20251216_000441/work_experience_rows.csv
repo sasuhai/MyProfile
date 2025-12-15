@@ -1,0 +1,65 @@
+id,position,company,location,start_date,end_date,description,achievements,skills,created_at,user_id,responsibilities
+1,DEEPCODE REVIEWER,Cognizant,"Menara Shell, Kuala Lumpur",2024-09-01,2025-05-31,"Assigned to Google team to verify Chrome Extension created by developers
+
+Ensure Chrome Extensions package complies with the company's policies such as identifying potential malwares (Ex: crypto-phishing, facebook data leakage, remote hosted code), obfuscation, impersonation/copycat and other policies.
+
+Verifying the extension metadata overview, network analysis and code package consisting JSON/JS (In PHP), HTML, CSS, and IMG files, testing and debugging to ensure it aligns with the policies.",[],[],2025-11-27 04:27:45.63788+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+2,SOFTWARE ENGINEER,Cognizant,"Menara 1 Sentrum, KL",2020-01-01,2025-09-30,"Assigned to Release Management (RM) Team in AmMetLife (AML).
+
+Develop and execute comprehensive strategies and solutions that align with the client's and company's goals and objectives by collaborating with co-workers from within and offshore team
+
+Provide mentorship to new joiners with proper guidance and support on the team's work requirements
+
+Lead, mentor, and manage a high-performing IT team, fostering a collaborative and results-driven work environment.
+
+Analyse and keep track of errors or valuable data using Ticketing System (ServiceNow) for RM team's side only.
+
+Oversee UAT batches are running efficiently and smoothly by executing SQL queries in softlocking and removing policies. Coordinate with Business Analyst (BA) and Batch Operators team to guarantee the successful execution of batch processes.
+
+Facilitate client requirements by delivering technical insights, creating RFC and master CHG ticket for IL/PX Production Deployments, and working with Kyndryl/IBM team to ensure that production deployments occur without any issues.
+
+Carry out verification of UAT deployments ahead of execution to prevent any potential issues.
+
+Perform various UAT deployments on AmMetLife applications based on clients’ requests by using command prompt, SQL, PuTTY, WinSCP and using AML applications (PX Calculators, COP websites, etc).",[],[],2025-11-27 04:29:37.490255+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+3,PROGRAMMER ANALYST TRAINEE,Cognizant,"Menara 1 Sentrum, KL",2019-06-01,2019-12-31,"Joined Cognizant company and assigned to IT Helpdesk Team at one of their client site, AmMetLife (AML)
+
+Keep track of the tickets on Kanban Wall
+
+Help to solve users' problems by generating reports and tickets by using AmMetLife and MetLife Ticketing System (ServiceNow) and communicating through calls with other teams
+
+Analyze and keep track of errors or valuable data by documenting it in tracker report(s) and in Ticketing System for whole IT team (IL/L2, BA, RM, PMACS, TNS, etc)",[],[],2025-11-27 04:31:02.646071+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+4,INSTRUCTIONAL SYSTEM DESIGN INTERN,Petronas,"Kajang, Selangor",2018-01-01,2018-03-31,"Did 3-Months (Jan - March 2018) Internship at PETRONAS Leadership Centre under supervision of System Design Supervisor - Salina.
+
+Main Role: Implemented and managed PETRONAS 6Es website using Microsoft SharePoint (Ex: HTML, CSS), Adobe Photoshop and Microsoft PowerPoint",[],[],2025-11-27 04:32:06.121075+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+15,DEEPCODE REVIEWER,Cognizant,"Menara Shell, Kuala Lumpur",2024-09-01,2025-05-31,"Assigned to Google team to verify Chrome Extension created by developers
+
+Ensure Chrome Extensions package complies with the company's policies such as identifying potential malwares (Ex: crypto-phishing, facebook data leakage, remote hosted code), obfuscation, impersonation/copycat and other policies.
+
+Verifying the extension metadata overview, network analysis and code package consisting JSON/JS (In PHP), HTML, CSS, and IMG files, testing and debugging to ensure it aligns with the policies.",[],[],2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,
+16,PROGRAMMER ANALYST TRAINEE,Cognizant,"Menara 1 Sentrum, KL",2019-06-01,2019-12-31,"Joined Cognizant company and assigned to IT Helpdesk Team at one of their client site, AmMetLife (AML)
+
+Keep track of the tickets on Kanban Wall
+
+Help to solve users' problems by generating reports and tickets by using AmMetLife and MetLife Ticketing System (ServiceNow) and communicating through calls with other teams
+
+Analyze and keep track of errors or valuable data by documenting it in tracker report(s) and in Ticketing System for whole IT team (IL/L2, BA, RM, PMACS, TNS, etc)",[],[],2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,
+17,INSTRUCTIONAL SYSTEM DESIGN INTERN,Petronas,"Kajang, Selangor",2018-01-01,2018-03-31,"Did 3-Months (Jan - March 2018) Internship at PETRONAS Leadership Centre under supervision of System Design Supervisor - Salina.
+
+Main Role: Implemented and managed PETRONAS 6Es website using Microsoft SharePoint (Ex: HTML, CSS), Adobe Photoshop and Microsoft PowerPoint",[],[],2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,
+18,SOFTWARE ENGINEER,Cognizant,"Menara 1 Sentrum, KL",2020-01-01,2025-09-30,"Assigned to Release Management (RM) Team in AmMetLife (AML).
+
+Develop and execute comprehensive strategies and solutions that align with the client's and company's goals and objectives by collaborating with co-workers from within and offshore team
+
+Provide mentorship to new joiners with proper guidance and support on the team's work requirements
+
+Lead, mentor, and manage a high-performing IT team, fostering a collaborative and results-driven work environment.
+
+Analyse and keep track of errors or valuable data using Ticketing System (ServiceNow) for RM team's side only.
+
+Oversee UAT batches are running efficiently and smoothly by executing SQL queries in softlocking and removing policies. Coordinate with Business Analyst (BA) and Batch Operators team to guarantee the successful execution of batch processes.
+
+Facilitate client requirements by delivering technical insights, creating RFC and master CHG ticket for IL/PX Production Deployments, and working with Kyndryl/IBM team to ensure that production deployments occur without any issues.
+
+Carry out verification of UAT deployments ahead of execution to prevent any potential issues.
+
+Perform various UAT deployments on AmMetLife applications based on clients’ requests by using command prompt, SQL, PuTTY, WinSCP and using AML applications (PX Calculators, COP websites, etc).",[],[],2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,

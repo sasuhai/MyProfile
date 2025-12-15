@@ -1,0 +1,57 @@
+id,degree,institution,location,start_date,end_date,description,achievements,created_at,user_id,field_of_study
+2,Bachelor Degree in Computer Science,TAYLOR'S UNIVERSITY,"Subang Jaya, Selangor",2015-01-01,2018-01-01,"2nd Class (Upper Division) results with a CGPA of 3.5. Received Dean's Letter in the last semester.
+
+Created Social Influencer Database System (Known as 'SocialTeng') as a Final Year Project in a group. Used basic knowledge and skills of Ruby on Rails and PostgreSQL database
+
+Created a few mobile app prototypes (Ex: Wonderlust, SmartProf, EyeWonder)
+Joined ToastMaster's club at Taylor's University
+Participated in Hilti's competition
+Volunteered to help prepared Final Year Project Showcase for the Taylor's University Seniors
+Received Google AdWords Search and Display Certifications for participating in Google Ignite Event in 2016",,2025-11-27 07:09:13.066068+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,Computer Science
+3,Tertiary Level,TAYLOR'S UNIVERSITY,"Subang Jaya, Selangor",2014-01-01,2015-01-01,2nd Class (Upper Division) results with a CGPA of 3.2,,2025-11-27 12:05:47.770576+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,Foundation in Computing & IT
+4,Primary & Secondary Schools,OTHERS,,,,"FAIRVIEW INTERNATIONAL SCHOOL
+Secondary Level | Located in Wangsa Maju, Malaysia | 2010 - 2014
+Took Cambridge O-Level Examinations
+
+SRI CEMPAKA INTERNATIONAL SCHOOL
+Secondary Level | Located in Cheras, Malaysia | 2007 - 2009
+
+GALATAS INTERNATIONAL SCHOOL
+Primary Level | Located in Texas, USA | 2006 - 2007
+
+DAVID INTERNATIONAL SCHOOL
+Primary Level | Located in Texas, USA | 2005 - 2006
+
+SEKOLAH RENDAH BUKIT JALIL
+Primary Level | Located in Bukit Jalil, Malaysia | 2004
+
+LITTLE LIGHTHOUSE
+Pre-school Level | Located in Ampang, Malaysia | 2001 - 2003",,2025-11-27 12:07:10.742223+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+11,Bachelor of Science in Computer Science,ADELAIDE UNIVERSITY,"Adelaide, South Australia",2015-01-01,2018-01-01,"1st Class (Upper Division) results. Received Dean's Letter in the last semester.
+
+Created Social Influencer Database System (Known as 'SocialTeng') as a Final Year Project in a group. Used basic knowledge and skills of Ruby on Rails and PostgreSQL database
+
+Created a few mobile app prototypes (Ex: Wonderlust, SmartProf, EyeWonder)
+Joined ToastMaster's club at Taylor's University
+Participated in Hilti's competition
+Volunteered to help prepared Final Year Project Showcase for the Taylor's University Seniors
+Received Google AdWords Search and Display Certifications for participating in Google Ignite Event in 2016",,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,Computer Science & Mathematics
+12,Tertiary Level,ADELAIDE UNIVERSITY,"Adelaide, South Australia",2014-01-01,2015-01-01,1st Class (Upper Division) results,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,Foundation in Computing & IT
+13,Primary & Secondary Schools,OTHERS,,,,"FAIRVIEW INTERNATIONAL SCHOOL
+Secondary Level | Located in Wangsa Maju, Malaysia | 2010 - 2014
+Took Cambridge O-Level Examinations
+
+SRI CEMPAKA INTERNATIONAL SCHOOL
+Secondary Level | Located in Cheras, Malaysia | 2007 - 2009
+
+GALATAS INTERNATIONAL SCHOOL
+Primary Level | Located in Texas, USA | 2006 - 2007
+
+DAVID INTERNATIONAL SCHOOL
+Primary Level | Located in Texas, USA | 2005 - 2006
+
+SEKOLAH RENDAH BUKIT JALIL
+Primary Level | Located in Bukit Jalil, Malaysia | 2004
+
+LITTLE LIGHTHOUSE
+Pre-school Level | Located in Ampang, Malaysia | 2001 - 2003",,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,

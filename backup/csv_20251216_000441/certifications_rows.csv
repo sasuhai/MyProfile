@@ -1,0 +1,7 @@
+id,name,issuer,issue_date,expiry_date,credential_url,created_at,user_id,credential_id
+1,Sharepoint Tutor,MS,2020-02-01,2020-03-01,,2025-11-27 06:51:58.130252+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+3,Certificate ABC,ABC Tech,,,,2025-11-27 07:09:33.323667+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,sdsadsa
+4,Test Cert,TestOnly,,,,2025-11-28 08:30:22.213308+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16,
+11,Certificate ABC,ABC Tech,,,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,sdsadsa
+12,Sharepoint Tutor,MS,2020-02-01,2020-03-01,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,
+13,Test Cert,TestOnly,,,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d,

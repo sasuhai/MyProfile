@@ -1,0 +1,41 @@
+id,name,category,level,created_at,user_id
+1,React,Frontend,90,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+2,JavaScript,Languages,85,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+3,TypeScript,Languages,80,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+4,Node.js,Backend,80,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+5,TailwindCSS,Frontend,85,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+6,PostgreSQL,Backend,75,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+7,Git,Tools,90,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+8,HTML/CSS,Frontend,95,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+9,Python,Languages,75,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+10,REST APIs,Backend,85,2025-11-26 14:25:46.769413+00,f98603f8-01eb-42f0-bf95-d6aa09522ab4
+11,HTML & CSS,Frontend,,2025-11-27 04:51:25.5165+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+12,SQL,Backend,80,2025-11-27 04:53:59.405531+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+13,C & C++ Programming (Basic),Frontend,,2025-11-27 04:54:29.21035+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+14,Java & Javascript,Frontend,,2025-11-27 04:54:48.580635+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+15,PHP Programming (Basic),Frontend,,2025-11-27 04:55:06.069978+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+16,Dynamic Excel Models,Tools,,2025-11-27 04:55:25.057487+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+17,Microsoft Office,Tools,,2025-11-27 04:55:38.420347+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+18,Data Management,Other,,2025-11-27 04:55:57.051341+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+19,UX/UI design using Adobe Experience Design,Frontend,80,2025-11-27 04:56:06.949295+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+20,Adobe Photoshop,Tools,,2025-11-27 04:56:43.663083+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+21,WinSCP,Tools,,2025-11-27 04:56:55.679429+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+22,PuTTY,Languages,,2025-11-27 04:57:06.159628+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+23,Performing UAT/Production Deployments,Other,,2025-11-27 04:57:17.969238+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+24,"Google Words, Slides, and Sheets",Tools,,2025-11-27 04:57:28.651478+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+25,Google Gemini,AI,80,2025-11-27 07:47:53.038756+00,09c3aaae-cc71-4cc0-9cfe-2c9fd0f52c16
+72,HTML & CSS,Frontend,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+73,SQL,Backend,80,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+74,C & C++ Programming (Basic),Frontend,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+75,Java & Javascript,Frontend,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+76,PHP Programming (Basic),Frontend,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+77,Dynamic Excel Models,Tools,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+78,Microsoft Office,Tools,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+79,Data Management,Other,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+80,UX/UI design using Adobe Experience Design,Frontend,80,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+81,Adobe Photoshop,Tools,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+82,WinSCP,Tools,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+83,PuTTY,Languages,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+84,Performing UAT/Production Deployments,Other,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+85,"Google Words, Slides, and Sheets",Tools,,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d
+86,Google Gemini,AI,80,2025-11-29 05:18:10.845482+00,3f57207d-8226-452e-936c-0f1af88a274d

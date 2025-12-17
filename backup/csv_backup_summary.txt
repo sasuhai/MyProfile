@@ -1,0 +1,23 @@
+Last CSV Backup Summary
+========================
+Date: 2025-12-16 00:10:34
+Method: Manual CSV Export (Supabase Free Tier)
+Tables Exported: 13
+Total Size:  60K
+Backup Folder: csv_20251216_000441
+Status: Success
+
+Files Included:
+Supabase Snippet Custom Resume Sections.csv
+about_features_rows.csv
+access_requests_rows.csv
+certifications_rows.csv
+contact_messages_rows.csv
+custom_resume_sections_rows.csv
+education_rows.csv
+profile_info_rows.csv
+projects_rows.csv
+skills_rows.csv
+supabase-edge-functions-logs-pztucbctmrbvrmpibwbf.csv.csv
+user_management_rows.csv
+work_experience_rows.csv

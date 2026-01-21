@@ -9,3 +9,6 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Allow client-side Firebase and Supabase keys in build output
+  # These are public API keys protected by Firebase/Supabase security rules
+  SECRETS_SCAN_OMIT_KEYS = "VITE_FIREBASE_API_KEY,VITE_FIREBASE_APP_ID,VITE_FIREBASE_AUTH_DOMAIN,VITE_FIREBASE_MESSAGING_SENDER_ID,VITE_FIREBASE_PROJECT_ID,VITE_FIREBASE_STORAGE_BUCKET,VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL"

@@ -1,6 +1,6 @@
 import { useParams, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { getProfileByUsername } from '../lib/supabase'
+import { getProfileByUsername } from '../lib/firebase'
 import { useTheme } from '../contexts/ThemeContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'

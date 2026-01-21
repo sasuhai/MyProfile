@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getCustomSections, addCustomSection, updateCustomSection, deleteCustomSection } from '../../lib/supabase'
+import { getCustomSections, addCustomSection, updateCustomSection, deleteCustomSection } from '../../lib/firebase'
 import { Plus, Edit, Trash2, Save, X, GripVertical } from 'lucide-react'
 import toast from 'react-hot-toast'
 

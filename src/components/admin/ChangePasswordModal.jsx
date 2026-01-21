@@ -1,8 +1,9 @@
+// Note: Migrated from Supabase to Firebase
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react'
-import { changePassword } from '../../lib/supabase'
-import { supabase } from '../../lib/supabase'
+import { changePassword, getCurrentUser, db } from '../../lib/firebase'
+import { collection, query, where, getDocs, updateDoc, doc } from 'firebase/firestore'
 import toast from 'react-hot-toast'
 
 const ChangePasswordModal = ({ isOpen, onClose, isForced = false }) => {
@@ -67,15 +68,19 @@ const ChangePasswordModal = ({ isOpen, onClose, isForced = false }) => {
             if (passwordError) throw passwordError
 
             // Clear the must_change_password flag
-            const { data: { user } } = await supabase.auth.getUser()
+            const user = getCurrentUser()
             if (user) {
-                const { error: updateError } = await supabase
-                    .from('profile_info')
-                    .update({ must_change_password: false })
-                    .eq('user_id', user.id)
+                const q = query(
+                    collection(db, 'profile_info'),
+                    where('user_id', '==', user.uid)
+                )
+                const querySnapshot = await getDocs(q)
 
-                if (updateError) {
-                    console.error('Error updating password flag:', updateError)
+                if (!querySnapshot.empty) {
+                    const profileDoc = querySnapshot.docs[0]
+                    await updateDoc(doc(db, 'profile_info', profileDoc.id), {
+                        must_change_password: false
+                    })
                 }
             }
 
@@ -123,8 +128,8 @@ const ChangePasswordModal = ({ isOpen, onClose, isForced = false }) => {
                     {/* Header */}
                     <div className="text-center mb-6">
                         <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center ${isForced
-                                ? 'bg-amber-100 dark:bg-amber-900/20'
-                                : 'bg-primary-100 dark:bg-primary-900/20'
+                            ? 'bg-amber-100 dark:bg-amber-900/20'
+                            : 'bg-primary-100 dark:bg-primary-900/20'
                             }`}>
                             {isForced ? (
                                 <AlertTriangle className="w-8 h-8 text-amber-600 dark:text-amber-400" />

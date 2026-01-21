@@ -1,7 +1,8 @@
+// Note: Migrated from Supabase to Firebase
 import { Link, useParams } from 'react-router-dom'
 import { Github, Linkedin, Twitter, Mail, Heart } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { getProfile } from '../lib/supabase'
+import { getProfile } from '../lib/firebase'
 
 const Footer = ({ username: usernameProp }) => {
     const { username: usernameParam } = useParams()

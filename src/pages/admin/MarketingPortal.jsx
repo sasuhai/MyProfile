@@ -1,3 +1,4 @@
+// Note: Migrated from Supabase to Firebase
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import {

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getSkills, addSkill, updateSkill, deleteSkill } from '../../lib/supabase'
+import { getSkills, addSkill, updateSkill, deleteSkill } from '../../lib/firebase'
 import { Plus, Edit, Trash2, Save, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 

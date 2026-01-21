@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getAboutFeatures, addAboutFeature, updateAboutFeature, deleteAboutFeature } from '../../lib/supabase'
+import { getAboutFeatures, addAboutFeature, updateAboutFeature, deleteAboutFeature } from '../../lib/firebase'
 import { Plus, Edit, Trash2, Save, X, Code2, Zap, Heart, Globe, Star, Award, Target, Lightbulb } from 'lucide-react'
 import toast from 'react-hot-toast'
 

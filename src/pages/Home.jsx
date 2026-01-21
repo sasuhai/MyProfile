@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { Link, useParams } from 'react-router-dom'
 import { Download, Mail, ArrowRight, Github, Linkedin, Code2, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { getProfileByUsername, getPublishedProjects, getSkills, getCertifications, getWorkExperience } from '../lib/supabase'
+import { getProfileByUsername, getPublishedProjects, getSkills, getCertifications, getWorkExperience } from '../lib/firebase'
 
 const Home = ({ username: usernameProp, profile: profileProp }) => {
     const { username: usernameParam } = useParams()

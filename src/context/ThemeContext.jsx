@@ -1,5 +1,6 @@
+// Note: Migrated from Supabase to Firebase
 import { createContext, useContext, useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { getProfileByUsername } from '../lib/firebase'
 
 const ThemeContext = createContext()
 
@@ -20,12 +21,8 @@ export const ThemeProvider = ({ children, username }) => {
 
     const loadThemeColor = async () => {
         try {
-            // Get user ID from username
-            const { data: userData } = await supabase
-                .from('profile_info')
-                .select('theme_color, user_id')
-                .eq('username', username || 'sasuhai')
-                .single()
+            // Get user profile by username
+            const { data: userData } = await getProfileByUsername(username || 'sasuhai')
 
             if (userData?.theme_color) {
                 applyThemeColor(userData.theme_color)

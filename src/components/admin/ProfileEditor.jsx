@@ -1,7 +1,7 @@
+// Note: Migrated from Supabase to Firebase
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getCurrentUser, updateProfile, uploadFile } from '../../lib/supabase'
-import { supabase } from '../../lib/supabase'
+import { getProfile, updateProfile, uploadFile, deleteFile } from '../../lib/firebase'
 import { useTheme } from '../../contexts/ThemeContext'
 import { Save, Upload, Image as ImageIcon, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'

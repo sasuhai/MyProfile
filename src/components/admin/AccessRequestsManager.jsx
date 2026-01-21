@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import {
-    Mail, User, Clock, CheckCircle2, XCircle, AlertCircle,
-    Loader, RefreshCw, Eye, Trash2
-} from 'lucide-react'
-import { supabase } from '../../lib/supabase'
+// Note: Migrated from Supabase to Firebase
+import { motion, AnimatePresence } from 'framer-motion'
+import { UserCheck, X, Check, XCircle, Clock, Mail, Phone, MessageSquare, Calendar, User, Loader, RefreshCw, Trash2, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { db, getCurrentUser } from '../../lib/firebase'
+import { collection, query, where, getDocs, updateDoc, doc, orderBy, deleteDoc } from 'firebase/firestore'
 import { createUserWithProfile } from '../../lib/supabaseAdmin'
 import toast from 'react-hot-toast'
 import RejectRequestModal from './RejectRequestModal'
@@ -28,18 +27,31 @@ const AccessRequestsManager = () => {
     const loadRequests = async () => {
         setLoading(true)
         try {
-            let query = supabase
-                .from('access_requests')
-                .select('*')
-                .order('created_at', { ascending: false })
-
-            if (filter !== 'all') {
-                query = query.eq('status', filter)
+            // Build query based on filter
+            let q
+            if (filter === 'all') {
+                q = query(collection(db, 'access_requests'))
+            } else {
+                q = query(
+                    collection(db, 'access_requests'),
+                    where('status', '==', filter)
+                )
             }
 
-            const { data, error } = await query
+            const querySnapshot = await getDocs(q)
 
-            if (error) throw error
+            // Sort in code to avoid composite index
+            const data = querySnapshot.docs
+                .map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }))
+                .sort((a, b) => {
+                    const dateA = a.created_at?.toMillis?.() || 0
+                    const dateB = b.created_at?.toMillis?.() || 0
+                    return dateB - dateA // Descending (newest first)
+                })
+
             setRequests(data || [])
         } catch (error) {
             console.error('Error loading requests:', error)
@@ -74,20 +86,15 @@ const AccessRequestsManager = () => {
             }
 
             // Get current user (admin)
-            const { data: { user } } = await supabase.auth.getUser()
+            const user = getCurrentUser()
 
-            // Update request status
-            const { error: updateError } = await supabase
-                .from('access_requests')
-                .update({
-                    status: 'approved',
-                    approved_by: user.id,
-                    approved_at: new Date().toISOString(),
-                    user_id: result.data.userId
-                })
-                .eq('id', request.id)
-
-            if (updateError) throw updateError
+            // Update request status in Firestore
+            await updateDoc(doc(db, 'access_requests', request.id), {
+                status: 'approved',
+                approved_by: user.uid,
+                approved_at: new Date(),
+                user_id: result.data.userId
+            })
 
             // Show success modal with credentials for admin to send to user
             setApprovedCredentials({
@@ -119,18 +126,14 @@ const AccessRequestsManager = () => {
 
         setIsRejecting(true)
         try {
-            const { data: { user } } = await supabase.auth.getUser()
+            const user = getCurrentUser()
 
-            const { error } = await supabase
-                .from('access_requests')
-                .update({
-                    status: 'rejected',
-                    approved_by: user.id,
-                    approved_at: new Date().toISOString()
-                })
-                .eq('id', requestToReject.id)
-
-            if (error) throw error
+            // Update request status in Firestore
+            await updateDoc(doc(db, 'access_requests', requestToReject.id), {
+                status: 'rejected',
+                approved_by: user.uid,
+                approved_at: new Date()
+            })
 
             toast.success(`Access request rejected`)
 
@@ -154,12 +157,8 @@ const AccessRequestsManager = () => {
 
         setProcessingId(request.id)
         try {
-            const { error } = await supabase
-                .from('access_requests')
-                .delete()
-                .eq('id', request.id)
-
-            if (error) throw error
+            // Delete request from Firestore
+            await deleteDoc(doc(db, 'access_requests', request.id))
 
             toast.success('Request deleted')
             loadRequests()

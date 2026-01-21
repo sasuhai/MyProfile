@@ -1,3 +1,4 @@
+// Note: Migrated from Supabase to Firebase
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -9,8 +10,9 @@ import {
     signOut,
     isCurrentUserAdmin,
     getCurrentUser,
-} from '../../lib/supabase'
-import { supabase } from '../../lib/supabase'
+    db
+} from '../../lib/firebase'
+import { collection, query, where, getDocs, getCountFromServer } from 'firebase/firestore'
 import {
     LogOut, User, Briefcase, FolderGit2, Award, MessageSquare,
     Settings, BarChart3, Plus, Edit, Trash2, Eye, EyeOff, Users, Info, UserCheck
@@ -71,13 +73,14 @@ const AdminDashboard = () => {
     const loadUserProfile = async () => {
         const currentUser = await getCurrentUser()
         if (currentUser) {
-            const { data } = await supabase
-                .from('profile_info')
-                .select('username, full_name, email, role')
-                .eq('user_id', currentUser.id)
-                .single()
-            if (data) {
-                setUserProfile(data)
+            const q = query(
+                collection(db, 'profile_info'),
+                where('user_id', '==', currentUser.uid)
+            )
+            const querySnapshot = await getDocs(q)
+            if (!querySnapshot.empty) {
+                const profile = querySnapshot.docs[0]
+                setUserProfile({ id: profile.id, ...profile.data() })
             }
         }
     }
@@ -99,14 +102,12 @@ const AdminDashboard = () => {
         if (userProfile?.role !== 'admin') return
 
         try {
-            const { count, error } = await supabase
-                .from('access_requests')
-                .select('*', { count: 'exact', head: true })
-                .eq('status', 'pending')
-
-            if (!error) {
-                setPendingRequests(count || 0)
-            }
+            const q = query(
+                collection(db, 'access_requests'),
+                where('status', '==', 'pending')
+            )
+            const snapshot = await getCountFromServer(q)
+            setPendingRequests(snapshot.data().count || 0)
         } catch (error) {
             console.error('Error loading pending requests:', error)
         }
@@ -119,14 +120,14 @@ const AdminDashboard = () => {
             let username = userProfile?.username
 
             if (currentUser) {
-                const { data } = await supabase
-                    .from('profile_info')
-                    .select('username')
-                    .eq('user_id', currentUser.id)
-                    .single()
-
-                if (data?.username) {
-                    username = data.username
+                const q = query(
+                    collection(db, 'profile_info'),
+                    where('user_id', '==', currentUser.uid)
+                )
+                const querySnapshot = await getDocs(q)
+                if (!querySnapshot.empty) {
+                    const profile = querySnapshot.docs[0]
+                    username = profile.data().username
                 }
             }
 

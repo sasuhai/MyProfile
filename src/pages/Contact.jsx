@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { addContactMessage, getProfileByUsername } from '../lib/supabase'
+import { addContactMessage, getProfileByUsername } from '../lib/firebase'
 import { Mail, MapPin, Phone, Send, CheckCircle, Github, Linkedin, Twitter } from 'lucide-react'
 import toast from 'react-hot-toast'
 

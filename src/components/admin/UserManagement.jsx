@@ -7,8 +7,7 @@ import {
     getUserStats,
     isCurrentUserAdmin,
     getCurrentUser
-} from '../../lib/supabase'
-import { createUserWithProfile, deleteUserAndProfile } from '../../lib/supabaseAdmin'
+} from '../../lib/firebase'
 import { Users, Shield, User, Mail, Calendar, Key, UserPlus, Trash2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import DeleteUserModal from './DeleteUserModal'

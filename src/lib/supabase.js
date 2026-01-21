@@ -1,3 +1,4 @@
+// Note: Migrated from Supabase to Firebase
 import { createClient } from '@supabase/supabase-js'
 import { PORTFOLIO_CONFIG } from '../config/portfolio.config'
 

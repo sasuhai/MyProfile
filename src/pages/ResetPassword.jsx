@@ -1,7 +1,8 @@
+// Note: Migrated from Supabase to Firebase
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { auth, getCurrentUser, changePassword } from '../lib/firebase'
 import { Lock, KeyRound, Eye, EyeOff, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -18,8 +19,8 @@ const ResetPassword = () => {
     useEffect(() => {
         // Check if we have a valid session from the reset link
         const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (session) {
+            const user = getCurrentUser()
+            if (user) {
                 setIsValidToken(true)
             } else {
                 toast.error('Invalid or expired reset link')
@@ -46,9 +47,7 @@ const ResetPassword = () => {
         setLoading(true)
 
         try {
-            const { error } = await supabase.auth.updateUser({
-                password: password
-            })
+            const { error } = await changePassword(password)
 
             if (error) throw error
 

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getMessages } from '../../lib/supabase'
+import { getMessages } from '../../lib/firebase'
 import { Mail, Calendar, User } from 'lucide-react'
 
 const MessagesViewer = () => {

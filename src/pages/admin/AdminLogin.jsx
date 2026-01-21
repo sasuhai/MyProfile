@@ -1,8 +1,9 @@
+// Note: Migrated from Supabase to Firebase
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signIn, resetUserPassword } from '../../lib/supabase'
-import { supabase } from '../../lib/supabase'
+import { signIn, resetUserPassword, db } from '../../lib/firebase'
+import { collection, query, where, getDocs } from 'firebase/firestore'
 import { Lock, Mail, LogIn, KeyRound, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import ChangePasswordModal from '../../components/admin/ChangePasswordModal'
@@ -37,21 +38,26 @@ const AdminLogin = () => {
             if (error) throw error
 
             // Check if user must change password
-            const { data: profile } = await supabase
-                .from('profile_info')
-                .select('must_change_password')
-                .eq('user_id', data.user.id)
-                .single()
+            const q = query(
+                collection(db, 'profile_info'),
+                where('user_id', '==', data.user.uid)
+            )
+            const querySnapshot = await getDocs(q)
 
-            if (profile?.must_change_password) {
-                // Show password change modal instead of navigating
-                setMustChangePassword(true)
-                setShowPasswordChangeModal(true)
-                toast.success('Login successful! Please change your password.')
-            } else {
-                toast.success('Login successful!')
-                navigate('/admin/dashboard')
+            if (!querySnapshot.empty) {
+                const profile = querySnapshot.docs[0]
+                if (profile.data().must_change_password) {
+                    // Show password change modal instead of navigating
+                    setMustChangePassword(true)
+                    setShowPasswordChangeModal(true)
+                    toast.success('Login successful! Please change your password.')
+                    setLoading(false)
+                    return
+                }
             }
+
+            toast.success('Login successful!')
+            navigate('/admin/dashboard')
         } catch (error) {
             console.error('Login error:', error)
             toast.error(error.message || 'Invalid credentials')

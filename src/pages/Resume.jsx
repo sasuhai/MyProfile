@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { getEducation, getWorkExperience, getCertifications, getCustomSections } from '../lib/supabase'
+import { getEducation, getWorkExperience, getCertifications, getCustomSections } from '../lib/firebase'
 import { GraduationCap, Briefcase, Award, Calendar, MapPin, ExternalLink, Sparkles } from 'lucide-react'
 
 const Resume = ({ username: usernameProp }) => {

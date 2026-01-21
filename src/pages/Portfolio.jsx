@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getPublishedProjects } from '../lib/supabase'
+import { getPublishedProjects } from '../lib/firebase'
 import { ExternalLink, Github, Image as ImageIcon } from 'lucide-react'
 
 const Portfolio = ({ username: usernameProp }) => {

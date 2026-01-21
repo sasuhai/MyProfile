@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProfileByUsername, getSkills, getEducation, getWorkExperience, getCertifications, getCustomSections, getAboutFeatures, getPublishedProjects } from '../lib/supabase'
+import { getProfileByUsername, getSkills, getEducation, getWorkExperience, getCertifications, getCustomSections, getAboutFeatures, getPublishedProjects } from '../lib/firebase'
 import { Mail, Phone, MapPin, Globe, Github, Linkedin, Twitter, ExternalLink } from 'lucide-react'
 import '../styles/pdf-resume.css'
 

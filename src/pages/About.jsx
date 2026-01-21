@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { getProfileByUsername, getSkills, getAboutFeatures } from '../lib/supabase'
+import { getProfileByUsername, getSkills, getAboutFeatures } from '../lib/firebase'
 import { Code2, Palette, Database, Globe, Zap, Heart, Star, Award, Target, Lightbulb } from 'lucide-react'
 
 const About = ({ username: usernameProp, profile: profileProp }) => {

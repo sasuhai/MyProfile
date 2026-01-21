@@ -13,7 +13,7 @@ import {
     addCertification,
     updateCertification,
     deleteCertification
-} from '../../lib/supabase'
+} from '../../lib/firebase'
 import { GraduationCap, Briefcase, Award, Plus, Edit, Trash2, Save, X, Calendar, MapPin, Sparkles } from 'lucide-react'
 import toast from 'react-hot-toast'
 import CustomSectionsEditor from './CustomSectionsEditor'

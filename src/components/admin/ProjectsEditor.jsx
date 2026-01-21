@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getAllProjects, addProject, updateProject, deleteProject, uploadFile } from '../../lib/supabase'
+import { getAllProjects, addProject, updateProject, deleteProject, uploadFile } from '../../lib/firebase'
 import { Plus, Edit, Trash2, Save, X, Upload, Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
 

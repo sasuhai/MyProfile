@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { getAllProfiles } from '../lib/supabase'
+import { getAllProfiles } from '../lib/firebase'
 import { Users, ArrowRight, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 

@@ -9,6 +9,7 @@ import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import ResetPassword from './pages/ResetPassword'
 import MarketingPortal from './pages/admin/MarketingPortal'
+import DebugData from './pages/DebugData'
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
 
               {/* Public marketing portal */}
               <Route path="/about" element={<MarketingPortal />} />
+
+              {/* Debug route - TEMPORARY */}
+              <Route path="/debug" element={<DebugData />} />
 
               {/* Admin routes (no navbar/footer) */}
               <Route path="/admin/login" element={<AdminLogin />} />
